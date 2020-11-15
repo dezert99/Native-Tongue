@@ -47,6 +47,35 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.login = (req,res) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+  const user = new User({username: req.body.username, password: req.body.password})
+  User.login(user, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found User with username ${user.username}.`
+        });
+      }
+      else if(err.kind === "unauthorized") {
+        res.status(401).send({
+          message: `Incorrect password.`
+        });
+      } 
+      else {
+        res.status(500).send({
+          message: `Internal server error: ${err}`
+        })
+      }
+    } 
+    else res.send(data);
+  })
+}
+
 // Update an User identified by the UserId in the request
 exports.update = (req, res) => {
     // Validate Request
@@ -57,16 +86,22 @@ exports.update = (req, res) => {
     }
   
     User.updatePassword(
-      req.params.currPassword,
-      req.params.newPassword.
-      req.params.username,
+      req.body.currPassword,
+      req.body.newPassword,
+      req.body.username,
       (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
               message: `Not found User with id ${req.params.aID}.`
             });
-          } else {
+          } 
+          else if(err.kind === "badpass") {
+            res.status(401).send({
+              message: "Bad password"
+            })
+          }
+          else {
             res.status(500).send({
               message: "Error updating User with id " + req.params.aID
             });
