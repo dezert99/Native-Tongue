@@ -3,7 +3,7 @@ import {
     Switch,
     Route,
   } from "react-router-dom";
-
+import HomePage from "./views/pages/homepage/homepage"
 
 export default class Routes extends Component {
   
@@ -12,9 +12,14 @@ export default class Routes extends Component {
     return (
         <Switch>
             {/* NOTE: / must be the last path in the switch */}
-            <Route path="/">
-                <Home />
+            <Route path="/test">
+              <h2>This worked</h2>
+
             </Route>
+            <Route path="/" >
+                <HomePage name = "Emilia" />
+            </Route>
+            
         </Switch>
     );
   }

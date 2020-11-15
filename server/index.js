@@ -26,6 +26,9 @@ app.get('/api/greeting', (req, res) => {
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
 });
 
+
+require("../server/routes/users_route.js")(app);
+
 app.listen(port, () =>
   console.log(`Express server is running on localhost:${port}`)
 );
