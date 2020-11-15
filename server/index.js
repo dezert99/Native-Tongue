@@ -5,7 +5,8 @@ const path = require('path');
 
 const port = 3001;
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 app.use(pino);
 console.log("in app server", process.env);
 // if(process.env.NODE_ENV !== "development"){

@@ -53,6 +53,7 @@ exports.login = (req,res) => {
       message: "Content can not be empty!"
     });
   }
+  console.log("req",req.body);
   const user = new User({username: req.body.username, password: req.body.password})
   User.login(user, (err, data) => {
     if (err) {

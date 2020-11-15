@@ -2,6 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
 } from "react-router-dom";
+import axios from 'axios'
 
 import { LinkContainer } from 'react-router-bootstrap'
 
@@ -15,7 +16,11 @@ import {UserContext} from "./contexts/userContext";
 // import Sidebar from "./views/components/sidebar/sidebar"
 import Routes from "./routes";
 
-
+const config = {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
 export default class App extends React.Component {
 
   constructor(props){
@@ -37,9 +42,19 @@ export default class App extends React.Component {
   }
 
   login() {
-    let username = this.usernameRef.current.value;
-    let password = this.passwordRef.current.value;
+    const username = this.usernameRef.current.value;
+    const password = require("crypto")
+    .createHash("sha256")
+    .update(this.passwordRef.current.value)
+    .digest("base64");
 
+    axios.post("/login", {username: username,
+      password: password}, config).then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
     console.log(username,password);
   }
 

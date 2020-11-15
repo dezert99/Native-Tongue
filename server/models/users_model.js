@@ -68,16 +68,17 @@ Users.updatePassword = (currPassword, newPassword, username, result) => {
 };
 
 Users.login = (user, result) => {
-    sql.query("SELECT * FROM users WHERE username=?", user.username, (err, res) => {
+    sql.query("SELECT * FROM users WHERE username=?", [user.username], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
 
-        console.log("res",res);
+        console.log("res",res, user);
 
-        if(res.length == 0) {
+        if (res.length == 0) {
+            // not found Users with the id
             result({ kind: "not_found" }, null);
             return;
         }

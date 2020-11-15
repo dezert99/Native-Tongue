@@ -13,7 +13,7 @@ module.exports = app => {
     // Delete a User with username
     // app.delete("/user", user.delete);
 
-    app.get("/login", user.login);
+    app.post("/login", user.login);
 
 };
     
