@@ -2,7 +2,6 @@ import React from "react";
 import {
   BrowserRouter as Router,
 } from "react-router-dom";
-import axios from 'axios'
 
 import { LinkContainer } from 'react-router-bootstrap'
 
@@ -12,55 +11,45 @@ import "./styles/main.scss"
 import "./styles/bootstrap-overrides.scss"
 
 import {UserContext} from "./contexts/userContext";
+import {read_cookie} from "./utils/cookies"
+import { Link } from 'react-router-dom'
+import {isEmpty} from 'lodash';
+
 
 // import Sidebar from "./views/components/sidebar/sidebar"
 import Routes from "./routes";
 
-const config = {
-  headers: {
-    'Content-Type': 'application/json'
-  }
-}
+
 export default class App extends React.Component {
 
   constructor(props){
     super(props);
 
-    this.state = {
-      user: {}
+    this.updateUserContext = (user) =>{
+      console.log("Updating user =>",user);
+      this.setState({
+        user: user
+      })
     }
 
-    this.logout = this.logout.bind(this);
-    this.login = this.login.bind(this);
-
-    this.usernameRef = React.createRef();
-    this.passwordRef = React.createRef();
+    this.state = {
+      user: {},
+      updateUser: this.updateUserContext
+    }
   }
 
-  logout() {
-    this.setState({user: {}});
-  }
-
-  login() {
-    const username = this.usernameRef.current.value;
-    const password = require("crypto")
-    .createHash("sha256")
-    .update(this.passwordRef.current.value)
-    .digest("base64");
-
-    axios.post("/login", {username: username,
-      password: password}, config).then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-    console.log(username,password);
+  componentDidMount() {
+    if(read_cookie("user")){
+      console.log("user cookie set", read_cookie("user"));
+      this.updateUserContext(read_cookie("user"));
+      console.log(window.location.href)
+    }
   }
 
   render() {
+    console.log("this",this.state.user);
     return (
-      <UserContext.Provider value = {this.state.user}>
+      <UserContext.Provider value = {this.state}>
         <Router>
         <div>
           {/* <Navbar className = "navbar" variant="dark" sticky="top">
@@ -98,38 +87,11 @@ export default class App extends React.Component {
                   <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
-              <Form>
-            <Form.Row className="align-items-center">
-              <Col xs="auto">
-                <Form.Label htmlFor="inlineFormInput" srOnly>
-                  Username
-                </Form.Label>
-                <Form.Control
-                  className="mb-2"
-                  id="username"
-                  placeholder="Username"
-                  ref = {this.usernameRef}
-                />
-              </Col>
-              <Col xs="auto">
-                <Form.Label htmlFor="inlineFormInputGroup" srOnly>
-                  Password
-                </Form.Label>
-                <InputGroup className="mb-2">
-                  <InputGroup.Prepend>
-                    <InputGroup.Text></InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <FormControl id="password" placeholder="Password" ref = {this.passwordRef}/>
-                </InputGroup>
-              </Col>
-              <Col xs="auto">
-                <Button className="mb-2" onClick = {this.login}>
-                  Submit
-                </Button>
-              </Col>
-            </Form.Row>
-          </Form>
             </Navbar.Collapse>
+            {!isEmpty(this.state.user)?<Col xs="auto">
+              Hello {this.state.user.email}
+            </Col> : <Link to="/login">Login</Link>}
+            
           </Navbar>
   
           <Container className = "body">

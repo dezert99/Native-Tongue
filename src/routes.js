@@ -4,6 +4,7 @@ import {
     Route,
   } from "react-router-dom";
 import HomePage from "./views/pages/homepage/homepage"
+import LoginPage from "./views/pages/login/login-page"
 
 export default class Routes extends Component {
   
@@ -16,20 +17,18 @@ export default class Routes extends Component {
               <h2>This worked</h2>
 
             </Route>
-            <Route path="/" >
-                <HomePage name = "Emilia" />
+            
+            <Route path="/login" >
+              <LoginPage/>
             </Route>
+
+            <Route path="/" >
+              <HomePage name = "Emilia" />
+            </Route>
+
+            
             
         </Switch>
     );
   }
 }
-
-function Home() {
-    return (
-    <div>
-      <h2>Welcome to Native Tounge</h2>
-    </div>
-    );
-  }
-  
