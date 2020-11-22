@@ -4,6 +4,7 @@ import {
     Route,
   } from "react-router-dom";
 import HomePage from "./views/pages/homepage/homepage"
+import About from "./views/pages/about/about"
 
 export default class Routes extends Component {
   
@@ -16,11 +17,15 @@ export default class Routes extends Component {
               <h2>This worked</h2>
 
             </Route>
-            <Route path="/" >
+            <Route path="/home" >
                 <HomePage name = "Emilia" />
+            </Route>
+            <Route exact path="/about" >
+               <About/> 
             </Route>
             
         </Switch>
+        
     );
   }
 }
