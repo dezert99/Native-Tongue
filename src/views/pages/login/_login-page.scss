@@ -1,0 +1,11 @@
+.login-page {
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    padding: 10px;
+
+    @media screen and (min-width: 767px) { 
+        margin-top: 30px;
+    }
+}
