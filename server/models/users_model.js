@@ -11,7 +11,7 @@ Users.create = (newUser, result) => {
     const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
     // const hashedPass = crypto.createHash("sha256").update(newUsers.password);
 
-    sql.query("INSERT INTO users SET email = ?, password = ?, dateJoined=?", [newUser.username, newUser.password, currDate], (err, res) => {
+    sql.query("INSERT INTO users SET email = ?, password = ?, date_joined=?", [newUser.username, newUser.password, currDate], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
