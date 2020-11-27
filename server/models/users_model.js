@@ -11,7 +11,7 @@ Users.create = (newUser, result) => {
     const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
     // const hashedPass = crypto.createHash("sha256").update(newUsers.password);
 
-    sql.query("INSERT INTO users SET username = ?, password = ?, dateJoined=?", [newUser.username, newUser.password, currDate], (err, res) => {
+    sql.query("INSERT INTO users SET email = ?, password = ?, date_joined=?", [newUser.username, newUser.password, currDate], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -31,7 +31,7 @@ Users.updatePassword = (currPassword, newPassword, username, result) => {
 //   const hashedNewPass = crypto.createHash("sha256").update(newPassword);
 
   sql.query(
-    "SELECT password FROM users WHERE username = ?",
+    "SELECT password FROM users WHERE email = ?",
     [username],
     (err, res) => {
       if (err) {
@@ -50,7 +50,7 @@ Users.updatePassword = (currPassword, newPassword, username, result) => {
         result({kind: "badpass"}, null);
       }
       else {
-        sql.query("UPDATE users SET password= ? WHERE username= ?",[newPassword,username] ,(err, res) => {
+        sql.query("UPDATE users SET password= ? WHERE email= ?",[newPassword,username] ,(err, res) => {
             if (err) {
                 console.log("error: ", err);
                 result(null, err);
@@ -68,7 +68,7 @@ Users.updatePassword = (currPassword, newPassword, username, result) => {
 };
 
 Users.login = (user, result) => {
-    sql.query("SELECT * FROM users WHERE username=?", [user.username], (err, res) => {
+    sql.query("SELECT * FROM users WHERE email=?", [user.username], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
@@ -93,16 +93,16 @@ Users.login = (user, result) => {
 }
 
 Users.getAll = result => {
-    sql.query("SELECT * FROM users", (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
+    // sql.query("SELECT * FROM users", (err, res) => {
+    //   if (err) {
+    //     console.log("error: ", err);
+    //     result(null, err);
+    //     return;
+    //   }
   
-      console.log("Users: ", res);
-      result(null, res);
-    });
+    //   console.log("Users: ", res);
+    //   result(null, res);
+    // });
 };
 
 // Users.remove = (id, result) => {
