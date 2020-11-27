@@ -20,14 +20,22 @@ exports.create = (req, res) => {
   const user = new User({
     username: req.body.username,
     password: req.body.password,
+    dob: req.body.dob, 
+    fName: req.body.fName, 
+    lName: req.body.lName, 
+    langauge: req.body.langauge,
+    port: req.body.port,
+    dependants: req.body.dependants,
+    nationality: req.body.nationality, 
   });
 
-  // Save Annoucment in the database
+  // Save User in the database
   User.create(user, (err, data) => {
     if (err){
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the User."
+          err.message || "Some error occurred while creating the User.",
+        code: err.Error
       });
       return;
     }

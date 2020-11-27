@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import LoginForm from "../../components/forms/login-form"
+import RegisterForm from "../../components/forms/register-form"
 import { Link } from 'react-router-dom'
 import {UserContext} from '../../../contexts/userContext';
 import {isEmpty} from "lodash";
 
 
 
-export default class LoginPage extends Component {
+export default class RegisterPage extends Component {
     componentDidMount(){
         if(!isEmpty(this.context.user)) {
             window.location.href = "/"
@@ -15,12 +15,12 @@ export default class LoginPage extends Component {
     render() {
 
         return (
-            <div class="login-page">
-                <h2>Login</h2>
-                <LoginForm />
-                <p>Don't have an account? <Link to="/signup">Sign up here</Link></p>
+            <div class="register-page">
+                <h2>Register</h2>
+                <RegisterForm />
+                <p>Already have an account? <Link to="/signup">Login in here</Link></p>
             </div>
         );
     }
 }
-LoginPage.contextType = UserContext
+RegisterPage.contextType = UserContext
