@@ -28,7 +28,7 @@ export default class HomePage extends Component {
 
     render() {
         let name = this.props.name;
-
+        console.log("PROPS",this.props)
         return (
             <div className="home-container">
                 <h2 className="home-container__welcome">Welcome {name}!</h2>
