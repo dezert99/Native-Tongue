@@ -4,6 +4,13 @@ const crypto = require('crypto')
 const Users = function(Users) {
     this.username = Users.username;
     this.password = Users.password;
+    this.dob = Users.dob; 
+    this.fName = Users.fName; 
+    this.lName = Users.lName; 
+    this.langauge = Users.langauge;
+    this.port = Users.port;
+    this.dependants = Users.dependants;
+    this.nationality = Users.nationality; 
 };
 
 Users.create = (newUser, result) => {
@@ -11,9 +18,9 @@ Users.create = (newUser, result) => {
     const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
     // const hashedPass = crypto.createHash("sha256").update(newUsers.password);
 
-    sql.query("INSERT INTO users SET email = ?, password = ?, date_joined=?", [newUser.username, newUser.password, currDate], (err, res) => {
+    sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate], (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        console.log("error in users model: ", err);
         result(err, null);
         return;
       }

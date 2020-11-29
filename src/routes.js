@@ -8,6 +8,7 @@ import About from "./views/pages/about/about"
 import WelcomeScreen from "./views/pages/chat/enter"
 import ChatScreen from "./views/pages/chat/chat"
 import LoginPage from "./views/pages/login/login-page"
+import RegisterPage from "./views/pages/register/register-page"
 
 export default class Routes extends Component {
   
@@ -29,6 +30,10 @@ export default class Routes extends Component {
             
             <Route exact path="/login" >
               <LoginPage/>
+            </Route>
+
+            <Route path="/signup">
+              <RegisterPage/>
             </Route>
 
             <Route exact path="/" >

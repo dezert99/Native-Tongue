@@ -11,7 +11,7 @@ import "./styles/main.scss"
 import "./styles/bootstrap-overrides.scss"
 
 import {UserContext} from "./contexts/userContext";
-import {read_cookie} from "./utils/cookies"
+import {read_cookie, delete_cookie} from "./utils/cookies"
 import { Link } from 'react-router-dom'
 import {isEmpty} from 'lodash';
 
@@ -32,9 +32,22 @@ export default class App extends React.Component {
       })
     }
 
+    this.logout = () => {
+      delete_cookie("user");
+      setTimeout(1000);
+      this.setState({
+        user: {}
+      }, () => {
+        window.location.href = "/login";
+      })
+      
+      
+    }
+
     this.state = {
       user: {},
-      updateUser: this.updateUserContext
+      updateUser: this.updateUserContext,
+      logout: this.logout
     }
   }
 
@@ -89,7 +102,8 @@ export default class App extends React.Component {
               </Nav>
             </Navbar.Collapse>
             {!isEmpty(this.state.user)?<Col xs="auto">
-              Hello {this.state.user.email}
+              Hello {this.state.user.first_name}
+              <span class = "logout" onClick = {this.logout}> Logout</span>
             </Col> : <Link to="/login">Login</Link>}
             
           </Navbar>

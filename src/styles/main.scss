@@ -2,3 +2,14 @@
 @import "variables.scss";
 @import "../views/pages/homepage/homepage.scss";
 @import "../views/pages/login/_login-page.scss";
+@import "../views/pages/register/_register-page.scss";
+
+
+.logout {
+    color: #007bff;
+    margin-left: 20px;
+
+    &:hover {
+        color: #3999ff
+    }
+}
