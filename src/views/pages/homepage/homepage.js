@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {UserContext} from "../../../contexts/userContext"
 
 export default class HomePage extends Component {
     constructor(props){
@@ -34,9 +35,11 @@ export default class HomePage extends Component {
                 <h2 className="home-container__welcome">Welcome {name}!</h2>
                 <button onClick = {() => {this.incrementCounter()}}>Increment me!</button>
                 <p>{this.state.counter}</p>
+                <p>{this.context.user.date_joined}</p>
             </div>
             
         );
     }
 }
+HomePage.contextType = UserContext;
 

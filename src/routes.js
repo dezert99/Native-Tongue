@@ -7,6 +7,7 @@ import HomePage from "./views/pages/homepage/homepage"
 import About from "./views/pages/about/about"
 import WelcomeScreen from "./views/pages/chat/enter"
 import ChatScreen from "./views/pages/chat/chat"
+import LoginPage from "./views/pages/login/login-page"
 
 export default class Routes extends Component {
   
@@ -17,28 +18,24 @@ export default class Routes extends Component {
             {/* NOTE: / must be the last path in the switch */}
             <Route path="/test">
               <h2>This worked</h2>
+            </Route>
 
-            </Route>
-            <Route path="/home" >
-                <HomePage name = "Emilia" />
-            </Route>
             <Route exact path="/about" >
                 <About/> 
             </Route>
 
             <Route exact path="/chat" component={ChatScreen} />
             <Route exact path="/enter" component={WelcomeScreen} />
+            
+            <Route exact path="/login" >
+              <LoginPage/>
+            </Route>
+
+            <Route exact path="/" >
+              <HomePage name = "Emilia" />
+            </Route>
         </Switch>
         
     );
   }
 }
-
-function Home() {
-    return (
-    <div>
-      <h2>Welcome to Native Tounge</h2>
-    </div>
-    );
-  }
-  

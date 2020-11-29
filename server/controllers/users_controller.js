@@ -57,23 +57,23 @@ exports.login = (req,res) => {
   const user = new User({username: req.body.username, password: req.body.password})
   User.login(user, (err, data) => {
     if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found User with username ${user.username}.`
+      if (err.kind === "not_found" || err.kind === "unauthorized") {
+        res.status(200).send({
+          error: true,
+          message: `Username/password combo was incorrect`
         });
       }
-      else if(err.kind === "unauthorized") {
-        res.status(401).send({
-          message: `Incorrect password.`
-        });
-      } 
       else {
         res.status(500).send({
           message: `Internal server error: ${err}`
         })
       }
     } 
-    else res.send(data);
+    else {
+      let resp = data;
+      delete resp.password;
+      res.send(data);
+    };
   })
 }
 
