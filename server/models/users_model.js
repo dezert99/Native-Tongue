@@ -1,5 +1,4 @@
 const sql = require("../database");
-const crypto = require('crypto')
 
 const Users = function(Users) {
     this.username = Users.username;
