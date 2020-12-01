@@ -1,4 +1,17 @@
 const sql = require("../database");
+const _ = require("lodash");
+
+function grabSQLData(sqlstr, params){
+  return new Promise((resolve, reject) => {
+    sql.query(sqlstr, params, (err, res) => {
+      if (err) {
+        reject(err);
+      }
+  
+      return resolve(res);
+    })
+  })
+}
 
 const Appointment = function(appointment) {
   this.id = appointment.id;
@@ -63,32 +76,23 @@ Appointment.getTranslatorAppointments = (translatorID,result) => {
   });
 };
 
-Appointment.byLangauge = async (langauge, result) => {
-  let ids = await sql.query("SELECT * FROM language WHERE language=?", [langauge], async (err, res) => {
-    if (err) {
-      console.log("error in appointments model byLanguage: ", err);
-      result(null, err);
-      return;
-    }
-
-    console.log("appointments: ", res);
-    return res;
-  });
+Appointment.byLangauge = async (langauge,uid, result) => {
+  let ids = await grabSQLData("SELECT * FROM language WHERE language=?",[langauge]) 
   let resp = [];
   console.log("ids", ids);
-  ids.forEach(async id => {
-    await sql.query("SELECT * FROM appointments WHERE translator_user_id=?", [id.user_id], (err, res) => {
-      if (err) {
-        console.log("error in appointments model getAPlicantScheduled: ", err);
-        result(null, err);
-        return;
-      }
-  
-      console.log("appointments: ", res);
-      resp.push(res);
+  for(let i = 0; i < ids.length; i++){
+    let val = await grabSQLData("SELECT * FROM appointments WHERE translator_user_id=? AND (status!='reserved' OR applicant_user_id=?)", [ids[i].user_id,uid]).catch(err => {
+      console.log("error in appointments model getAPlicantScheduled: ", err);
+      result(null, err);
+      return;
     });
-  })
-  console.log("resp",resp);
+    if(!_.isEmpty(val)){
+      console.log("val",val);
+      resp.push(val);
+    }
+  }
+  console.log("resp",resp[0]);
+  result(null, resp[0]);
 }
 
 Appointment.remove = (id, result) => {

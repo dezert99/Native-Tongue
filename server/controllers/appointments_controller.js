@@ -102,15 +102,16 @@ exports.getTranslatorAppointments = (req, res) => {
 
 exports.byLanguage = (req, res) => {
   const langauge = _.get(req.body,"langauge",false);
+  const uid = _.get(req.body,"applicantId",false);
 
-  if (_.isEmpty(req.body) && langauge) {
+  if (_.isEmpty(req.body) && langauge && uid) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
 
-  Appointment.byLangauge(langauge, (err, data) => {
+  Appointment.byLangauge(langauge,uid, (err, data) => {
     if (err)
       res.status(500).send({
         message:
