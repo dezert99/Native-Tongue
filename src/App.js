@@ -99,12 +99,13 @@ export default class App extends React.Component {
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                 </NavDropdown>
+                  {!isEmpty(this.state.user)?<Col xs="auto">
+                Hello {this.state.user.first_name}
+                <span class = "logout" onClick = {this.logout}> Logout</span>
+                </Col> : <Link to="/login">Login</Link>}
               </Nav>
             </Navbar.Collapse>
-            {!isEmpty(this.state.user)?<Col xs="auto">
-              Hello {this.state.user.first_name}
-              <span class = "logout" onClick = {this.logout}> Logout</span>
-            </Col> : <Link to="/login">Login</Link>}
+            
             
           </Navbar>
   

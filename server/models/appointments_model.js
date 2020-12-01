@@ -57,9 +57,23 @@ Appointment.getApplicantAppointments = (applicantID,result) => {
       result(null, err);
       return;
     }
+    let pending_accepted = [];
+    let open = [];
+
+    for(let i = 0; i< res.length; i++) {
+      if(res[i].status === "reserved" || res[i].status === "pending"){
+        pending_accepted.push(res[i]);
+      }
+      else {
+        open.push(res[i]);
+      }
+    }
 
     console.log("appointments: ", res);
-    result(null, res);
+    result(null, {
+      open: open,
+      pending_accepted: pending_accepted
+    });
   });
 };
 
@@ -70,11 +84,37 @@ Appointment.getTranslatorAppointments = (translatorID,result) => {
       result(null, err);
       return;
     }
+    let pending_accepted = [];
+    let open = [];
+
+    for(let i = 0; i< res.length; i++) {
+      if(res[i].status === "reserved" || res[i].status === "pending"){
+        pending_accepted.push(res[i]);
+      }
+      else {
+        open.push(res[i]);
+      }
+    }
+    console.log("appointments: ", res);
+    result(null, {
+      open: open,
+      pending_accepted: pending_accepted
+    });
+  });
+};
+
+Appointment.requestSlot = ((appointmentId, userId, result) => {
+  sql.query("UPDATE appointments WHERE appointment_id=? SET applicant_user_id=?, status='pending'", [appointmentId, userId], (err, res) => {
+    if (err) {
+      console.log("error in appointments model getAPlicantScheduled: ", err);
+      result(null, err);
+      return;
+    }
 
     console.log("appointments: ", res);
     result(null, res);
   });
-};
+})
 
 Appointment.byLangauge = async (langauge,uid, result) => {
   let ids = await grabSQLData("SELECT * FROM language WHERE language=?",[langauge]) 

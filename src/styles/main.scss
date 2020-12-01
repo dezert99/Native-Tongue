@@ -1,8 +1,13 @@
 @import "~bootstrap/scss/bootstrap";
 @import "variables.scss";
+
+// Pages
 @import "../views/pages/homepage/homepage.scss";
 @import "../views/pages/login/_login-page.scss";
 @import "../views/pages/register/_register-page.scss";
+
+// Components
+@import "../views/components/appointments/appointments-panel.scss";
 
 
 .logout {

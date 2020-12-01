@@ -1,0 +1,11 @@
+
+.apppanel {
+
+    &__header {
+        width: 100%;
+        text-align: center;
+        background-color: $offgray;
+        border-bottom: 1px solid #ccc;
+        padding: 15px;
+    }
+}

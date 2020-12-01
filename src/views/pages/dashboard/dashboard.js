@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {UserContext} from "../../../contexts/userContext"
 import {Container, Col, Row} from "react-bootstrap";
+import AppointmentPanel from "../../components/appointments/appointments-panel";
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -23,9 +24,7 @@ export default class Dashboard extends Component {
               
               
                 <Col sm={5} xs={12}>
-                    <div style={{width: "100%", border: "1px solid black"}}>
-                        comp
-                    </div>
+                    <AppointmentPanel />
                 </Col>
             </Row>
           </Container>
