@@ -29,6 +29,7 @@ app.get('/api/greeting', (req, res) => {
 
 
 require("../server/routes/users_route.js")(app);
+require("../server/routes/appointments_route.js")(app);
 
 app.listen(port, () =>
   console.log(`Express server is running on localhost:${port}`)

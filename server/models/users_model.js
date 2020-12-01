@@ -1,5 +1,4 @@
 const sql = require("../database");
-const crypto = require('crypto')
 
 const Users = function(Users) {
     this.username = Users.username;
@@ -14,10 +13,6 @@ const Users = function(Users) {
 };
 
 Users.create = (newUser, result) => {
-    var date = new Date(); 
-    const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
-    // const hashedPass = crypto.createHash("sha256").update(newUsers.password);
-
     sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate], (err, res) => {
       if (err) {
         console.log("error in users model: ", err);
@@ -33,10 +28,6 @@ Users.create = (newUser, result) => {
 
 
 Users.updatePassword = (currPassword, newPassword, username, result) => {
-  var date = new Date(); 
-  const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
-//   const hashedNewPass = crypto.createHash("sha256").update(newPassword);
-
   sql.query(
     "SELECT password FROM users WHERE email = ?",
     [username],
@@ -98,37 +89,4 @@ Users.login = (user, result) => {
         }
     })
 }
-
-Users.getAll = result => {
-    // sql.query("SELECT * FROM users", (err, res) => {
-    //   if (err) {
-    //     console.log("error: ", err);
-    //     result(null, err);
-    //     return;
-    //   }
-  
-    //   console.log("Users: ", res);
-    //   result(null, res);
-    // });
-};
-
-// Users.remove = (id, result) => {
-//     sql.query("DELETE FROM users WHERE id = ?", id, (err, res) => {
-//       if (err) {
-//         console.log("error: ", err);
-//         result(null, err);
-//         return;
-//       }
-  
-//       if (res.affectedRows == 0) {
-//         // not found Users with the id
-//         result({ kind: "not_found" }, null);
-//         return;
-//       }
-  
-//       console.log("deleted Users with id: ", id);
-//       result(null, res);
-//     });
-//   };
-
-  module.exports = Users;
+module.exports = Users;

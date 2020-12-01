@@ -3,12 +3,14 @@ import {
     Switch,
     Route,
   } from "react-router-dom";
-import HomePage from "./views/pages/homepage/homepage"
 import About from "./views/pages/about/about"
 import WelcomeScreen from "./views/pages/chat/enter"
 import ChatScreen from "./views/pages/chat/chat"
-import LoginPage from "./views/pages/login/login-page"
 import RegisterPage from "./views/pages/register/register-page"
+import HomePage from "./views/pages/homepage/homepage";
+import LoginPage from "./views/pages/login/login-page";
+import RegisterPage from "./views/pages/register/register-page";
+import Dashboard from "./views/pages/dashboard/dashboard";
 
 export default class Routes extends Component {
   
@@ -36,7 +38,11 @@ export default class Routes extends Component {
               <RegisterPage/>
             </Route>
 
-            <Route exact path="/" >
+            <Route path="/dashboard">
+              <Dashboard/>
+            </Route>
+
+            <Route path="/" >
               <HomePage name = "Emilia" />
             </Route>
         </Switch>

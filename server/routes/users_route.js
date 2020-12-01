@@ -10,9 +10,6 @@ module.exports = app => {
     // Update a User with username
     app.put("/user", user.update);
 
-    // Delete a User with username
-    // app.delete("/user", user.delete);
-
     app.post("/login", user.login);
 
 };
