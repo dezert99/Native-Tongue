@@ -142,7 +142,7 @@ export default class RegisterForm extends Component {
         })
         .catch((err) => {
             console.log(err.response.data);
-            if(err.response.data.message.includes("ER_DUP_ENTRY")){
+            if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
                 this.setState({
                     error: "This email is already taken, please choose another or login."
                 })
