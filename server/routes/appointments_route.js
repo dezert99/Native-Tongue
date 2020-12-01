@@ -13,8 +13,8 @@ module.exports = app => {
     // Retrieve all appointment
     app.get("/appointment/translator", appointment.getTranslatorAppointments);
 
-    // // Update a appointment with appointmentname
-    // app.put("/appointment", appointment.update);
+    // Update a appointment with appointmentname
+    app.put("/appointment", appointment.update);
 
     // Delete a appointment with appointmentname
     // app.delete("/appointment", appointment.delete);

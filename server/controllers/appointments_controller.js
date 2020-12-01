@@ -87,39 +87,48 @@ exports.getTranslatorAppointments = (req, res) => {
 }
 
 // // Update an appointment identified by the AptId in the request
-// exports.update = (req, res) => {
-//     // Validate Request
-//     if (!req.body) {
-//       res.status(400).send({
-//         message: "Content can not be empty!"
-//       });
-//     }
+exports.update = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+
+    const appointment = new Appointment({
+      id: req.body.appointmentId,
+      timeStart: req.body.timeStart,
+      timeEnd: req.body.timeEnd, 
+      description: req.body.description, 
+      translatorUserId: req.body.translatorUserId, 
+      applicantUserId: req.body.applicantUserId,
+      status: req.body.status,
+      location: req.body.location
+    });
   
-//     Appointment.updatePassword(
-//       req.body.currPassword,
-//       req.body.newPassword,
-//       req.body.username,
-//       (err, data) => {
-//         if (err) {
-//           if (err.kind === "not_found") {
-//             res.status(404).send({
-//               message: `Not found User with id ${req.params.aID}.`
-//             });
-//           } 
-//           else if(err.kind === "badpass") {
-//             res.status(401).send({
-//               message: "Bad password"
-//             })
-//           }
-//           else {
-//             res.status(500).send({
-//               message: "Error updating User with id " + req.params.aID
-//             });
-//           }
-//         } else res.send(data);
-//       }
-//     );
-//   };
+    Appointment.update(
+      appointment,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found appointment with id ${req.params.appointmentId}.`
+            });
+          } 
+          else if(err.kind === "badpass") {
+            res.status(401).send({
+              message: "Bad password"
+            })
+          }
+          else {
+            res.status(500).send({
+              message: "Error updating User with id " + req.params.aID
+            });
+          }
+        } else res.send(data);
+      }
+    );
+  };
 
 // Delete an appointment with the specified appointmentId in the request
 exports.delete = (req, res) => {
@@ -137,3 +146,4 @@ exports.delete = (req, res) => {
         } else res.send({ message: `appointment was deleted successfully!` });
     });
 };
+

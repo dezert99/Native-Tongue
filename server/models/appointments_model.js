@@ -81,4 +81,23 @@ Appointment.remove = (id, result) => {
     });
   };
 
+  Appointment.update = (appointment, result) => {
+    console.log("apt",appointment);
+    sql.query("UPDATE appointments SET time_start = ?, time_end = ?, description =?, translator_user_id = ?, applicant_user_id=?, status=?, location=? WHERE appointment_id=?", [appointment.timeStart, appointment.timeEnd, appointment.description, appointment.translatorUserId, appointment.applicantUserId ? appointment.applicantUserId : -1, appointment.status, appointment.location, appointment.id], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      if (res.affectedRows == 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
+  
+      console.log("updated appointment with id: ", appointment.id);
+      result(null, res);
+    });
+  };
+
   module.exports = Appointment;
