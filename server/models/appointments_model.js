@@ -63,6 +63,34 @@ Appointment.getTranslatorAppointments = (translatorID,result) => {
   });
 };
 
+Appointment.byLangauge = async (langauge, result) => {
+  let ids = await sql.query("SELECT * FROM language WHERE language=?", [langauge], async (err, res) => {
+    if (err) {
+      console.log("error in appointments model byLanguage: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("appointments: ", res);
+    return res;
+  });
+  let resp = [];
+  console.log("ids", ids);
+  ids.forEach(async id => {
+    await sql.query("SELECT * FROM appointments WHERE translator_user_id=?", [id.user_id], (err, res) => {
+      if (err) {
+        console.log("error in appointments model getAPlicantScheduled: ", err);
+        result(null, err);
+        return;
+      }
+  
+      console.log("appointments: ", res);
+      resp.push(res);
+    });
+  })
+  console.log("resp",resp);
+}
+
 Appointment.remove = (id, result) => {
     sql.query("DELETE FROM appointments WHERE appointment_id = ?", id, (err, res) => {
       if (err) {

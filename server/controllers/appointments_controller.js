@@ -56,6 +56,13 @@ exports.findAll = (req, res) => {
 
 //Get
 exports.getApplicantAppointments = (req, res) => {
+  if (_.isEmpty(req.body)) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   let applicantUserId = req.body.applicantUserId;
   console.log("params",req.params);
   console.log("body",req.body);
@@ -72,11 +79,38 @@ exports.getApplicantAppointments = (req, res) => {
 
 //Get
 exports.getTranslatorAppointments = (req, res) => {
+  if (_.isEmpty(req.body)) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
   let translatorUserId = req.body.translatorUserId;
   console.log("params",req.params);
   console.log("body",req.body);
 
   Appointment.getTranslatorAppointments(translatorUserId, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving appointments."
+      });
+    else res.send(data);
+  });
+}
+
+exports.byLanguage = (req, res) => {
+  const langauge = _.get(req.body,"langauge",false);
+
+  if (_.isEmpty(req.body) && langauge) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+
+  Appointment.byLangauge(langauge, (err, data) => {
     if (err)
       res.status(500).send({
         message:
