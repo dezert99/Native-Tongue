@@ -16,13 +16,14 @@ import { Send } from "@material-ui/icons";
 import axios from "axios";
 import ChatItem from "./chat_item";
 import {UserContext} from '../../../contexts/userContext';
+import { Redirect } from "react-router-dom";
 
 
 const Chat = require("twilio-chat");
 
 
 class ChatScreen extends React.Component {
-    constructor(props, UserContext) {
+    constructor(props) {
       super(props);
   
       this.state = {
@@ -31,17 +32,9 @@ class ChatScreen extends React.Component {
         loading: false,
         channel: null,
       };
-      // console.log("ROOM 1:", this.context.user.user_id);
-      
+  
       this.scrollDiv = React.createRef();
     }
-    // login = () => {
-    //   const {email} = this.context.user.email
-    //   const {room} = this.context.user_id
-    //   if (email && room) {
-    //     this.props.history.push("chat", { room, email });
-    //   }
-    // }
     joinChannel = async (channel) => {
         if (channel.channelState.status !== "joined") {
          await channel.join();
@@ -58,7 +51,6 @@ class ChatScreen extends React.Component {
      
      
      handleMessageAdded = (message) => {
-       console.log("in message added")
        const { messages } = this.state;
        this.setState({
            messages: [...messages, message],
@@ -75,13 +67,13 @@ class ChatScreen extends React.Component {
      };
      componentDidMount = async () => {
         const { location } = this.props;
-        console.log("LOCATION:", this.context.user.email)
-
-        const email = this.props.email || this.context.user.email
-        const room = this.props.room || this.context.user.user_id
-        
+        const { state } = location || {};
+        const { email, room } = state || {};
         let token = "";
-
+      
+        if (!email || !room) {
+          this.props.history.replace("/");
+        }
       
         this.setState({ loading: true });
       
@@ -109,13 +101,10 @@ class ChatScreen extends React.Component {
           });
         
           try {
-            console.log("ROOM 2:", room)
-            const channel = await client.getChannelByUniqueName(room.toString());
-            console.log("in the join channel", channel)
+            const channel = await client.getChannelByUniqueName(room);
             this.joinChannel(channel);
           } catch(err) {
             try {
-              console.log("in the catch, error:", err)
               const channel = await client.createChannel({
                 uniqueName: room,
                 friendlyName: room,
@@ -144,16 +133,21 @@ class ChatScreen extends React.Component {
         const { loading, text, messages, channel } = this.state;
         const { location } = this.props;
         const { state } = location || {};
-        console.log("CONTEXT:",this.context.user.email)
-        const email = this.props.email || this.context.user.email
-        const room = this.props.user_id || this.context.user.user_id
-        console.log(this.state)
-
+        const { email, room } = state || {};
+      
         return (
           <Container component="main" maxWidth="md">
-            <Backdrop open={loading} style={{ zIndex: 999}}>
+            <Backdrop open={loading} style={{ zIndex: 99999 }}>
               <CircularProgress style={{ color: "white" }} />
             </Backdrop>
+      
+            {/* <AppBar elevation={10}>
+              <Toolbar>
+                <Typography variant="h6">
+                  {`Room: ${room}, User: ${email}`}
+                </Typography>
+              </Toolbar>
+            </AppBar> */}
       
             <CssBaseline />
       
@@ -187,8 +181,8 @@ class ChatScreen extends React.Component {
                       value={text}
                       disabled={!channel}
                       onChange={(event) =>
-                        this.setState({ text: event.target.value })}
-                      />
+                        this.setState({ text: event.target.value })
+                      }/>
                   </Grid>
                   
                   <Grid item>
@@ -206,18 +200,17 @@ class ChatScreen extends React.Component {
         );
       }
   }
-  ChatScreen.contextType = UserContext;
+
   const styles = {
     textField: { width: "100%", borderWidth: 0, borderColor: "transparent" },
-    // textFieldContainer: { flex: 1, marginRight: 12 },
-    textFieldContainer: { flex: 1},
-    // gridItem: { paddingTop: 12, paddingBottom: 12 },
+    textFieldContainer: { flex: 1, marginRight: 12 },
+    gridItem: { paddingTop: 12, paddingBottom: 12 },
     gridItemChatList: { overflow: "auto", height: "70vh" },
     gridItemMessage: { marginTop: 12, marginBottom: 12 },
     sendButton: { backgroundColor: "#3f51b5" },
     sendIcon: { color: "white" },
-    // mainGrid: { paddingTop: 100, borderWidth: 1 },
+    mainGrid: { paddingTop: 100, borderWidth: 1 },
   };
-  
+  ChatScreen.contextType = UserContext
 
   export default ChatScreen;

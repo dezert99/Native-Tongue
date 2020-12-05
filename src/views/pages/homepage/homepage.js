@@ -1,44 +1,34 @@
 import React, { Component } from 'react';
 import {UserContext} from "../../../contexts/userContext"
+import SplitterLayout from 'react-splitter-layout';
+import 'react-splitter-layout/lib/index.css';
+import About from "../about/about"
+import LoginPage from "../login/login-page";
+import {Container, Col, Row} from "react-bootstrap";
 
 export default class HomePage extends Component {
-    constructor(props){
-        super(props);
-        let obj = {color: "blue", time: 34}
 
-        this.state = {
-            counter: 0
-
-        }
-        this.incrementCounter = this.incrementCounter.bind(this);
-    }
-
-    componentDidUpdate(prev, curr) {
-        console.log("Hey I updated!", prev, curr);
-    }
-
-    incrementCounter() {
-        console.log("in here!")
-        this.setState(
-            {
-                counter: this.state.counter+1
-            },
-            console.log("test")
-        )
-    }
 
     render() {
-        let name = this.props.name;
-        console.log("PROPS",this.props)
+        
         return (
-            <div className="home-container">
-                <h2 className="home-container__welcome">Welcome {name}!</h2>
-                <button onClick = {() => {this.incrementCounter()}}>Increment me!</button>
-                <p>{this.state.counter}</p>
-                <p>{this.context.user.date_joined}</p>
-            </div>
-            
-        );
+            <Container className = "body">
+                <Row>
+                    <Col sm={7}>
+                        <div style={{width: "100%"}}>
+                            <About/>
+                        </div>
+                    </Col>
+                  
+                  
+                    <Col sm={5} xs={12}>
+                        <div style={{width: "100%"}}>
+                            <LoginPage/>
+                        </div>
+                    </Col>
+                </Row>
+              </Container>
+            );
     }
 }
 HomePage.contextType = UserContext;

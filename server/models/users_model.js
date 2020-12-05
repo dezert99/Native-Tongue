@@ -10,7 +10,11 @@ const Users = function(Users) {
     this.port = Users.port;
     this.dependants = Users.dependants;
     this.nationality = Users.nationality; 
+
+    
 };
+var date = new Date();
+const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
 
 Users.create = (newUser, result) => {
     sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate], (err, res) => {

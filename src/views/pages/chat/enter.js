@@ -96,5 +96,5 @@ const styles = {
   gridItem: { paddingTop: 12, paddingBottom: 12 },
   button: { width: 300 },
 };
-
+// WelcomeScreen.contextType = UserContext
 export default WelcomeScreen;
