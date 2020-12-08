@@ -52,16 +52,12 @@ Appointment.getAll = result => {
 
 Appointment.getApplicantAppointments = async (applicantID,result) => {
   let userInfo = await grabSQLData("SELECT * FROM users WHERE user_id=?",[applicantID]) ;
- console.log("userInfo ", userInfo, userInfo[0]);
   let languages = userInfo[0]["languages"].replace(" ","").split(",");
-  console.log("languages ", languages);
   let translatorIds = []
   for(let i = 0; i < languages.length; i++) {
     let resp = await grabSQLData("SELECT * FROM language WHERE language=?",[languages[i]]);
-    console.log("resp ", resp);
     translatorIds.push(...resp);
   }
-  console.log("transids",translatorIds);
   let pending_accepted = [];
   let open = [];
   let appointments = []
@@ -74,16 +70,20 @@ Appointment.getApplicantAppointments = async (applicantID,result) => {
     });
     if(!_.isEmpty(appointments)){
       for(let i = 0; i< appointments.length; i++) {
+        let appointment = appointments[i];
+        console.log("app", appointment, appointment["translator_user_id"]);
+        let translatorData = await grabSQLData("SELECT first_name, last_name FROM users WHERE user_id = ?",[appointment["translator_user_id"]]);
+        appointment["translator"] = translatorData[0];
+        console.log("app after", appointment);
         if(appointments[i].status === "reserved" || appointments[i].status === "pending"){
-          pending_accepted.push(appointments[i]);
+          pending_accepted.push(appointment);
         }
         else {
-          open.push(appointments[i]);
+          open.push(appointment);
         }
       }
     }
   }
-  console.log("appointments: ", appointments);
   result(null, {
     open: open,
     pending_accepted: pending_accepted
