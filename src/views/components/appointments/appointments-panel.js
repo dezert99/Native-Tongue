@@ -87,8 +87,6 @@ export default class AppointmentPanel extends Component {
                         </div>
                         
                     </Col>
-                
-                
                     <Col sm={6} xs={12}>
                         <div className ="apppanel__header">
                             Open

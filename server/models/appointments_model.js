@@ -50,30 +50,43 @@ Appointment.getAll = result => {
   });
 };
 
-Appointment.getApplicantAppointments = (applicantID,result) => {
-  sql.query("SELECT * FROM appointments WHERE applicant_user_id=?", [applicantID], (err, res) => {
-    if (err) {
+Appointment.getApplicantAppointments = async (applicantID,result) => {
+  let userInfo = await grabSQLData("SELECT * FROM users WHERE user_id=?",[applicantID]) ;
+ console.log("userInfo ", userInfo, userInfo[0]);
+  let languages = userInfo[0]["languages"].replace(" ","").split(",");
+  console.log("languages ", languages);
+  let translatorIds = []
+  for(let i = 0; i < languages.length; i++) {
+    let resp = await grabSQLData("SELECT * FROM language WHERE language=?",[languages[i]]);
+    console.log("resp ", resp);
+    translatorIds.push(...resp);
+  }
+  console.log("transids",translatorIds);
+  let pending_accepted = [];
+  let open = [];
+  let appointments = []
+  for(let i = 0; i < translatorIds.length; i++){
+    appointments = await grabSQLData("SELECT * FROM appointments WHERE translator_user_id=? AND (status!='reserved' OR applicant_user_id=?)", [translatorIds[i].user_id,applicantID])
+    .catch(err => {
       console.log("error in appointments model getAPlicantScheduled: ", err);
       result(null, err);
       return;
-    }
-    let pending_accepted = [];
-    let open = [];
-
-    for(let i = 0; i< res.length; i++) {
-      if(res[i].status === "reserved" || res[i].status === "pending"){
-        pending_accepted.push(res[i]);
-      }
-      else {
-        open.push(res[i]);
-      }
-    }
-
-    console.log("appointments: ", res);
-    result(null, {
-      open: open,
-      pending_accepted: pending_accepted
     });
+    if(!_.isEmpty(appointments)){
+      for(let i = 0; i< appointments.length; i++) {
+        if(appointments[i].status === "reserved" || appointments[i].status === "pending"){
+          pending_accepted.push(appointments[i]);
+        }
+        else {
+          open.push(appointments[i]);
+        }
+      }
+    }
+  }
+  console.log("appointments: ", appointments);
+  result(null, {
+    open: open,
+    pending_accepted: pending_accepted
   });
 };
 

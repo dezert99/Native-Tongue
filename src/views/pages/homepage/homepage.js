@@ -2,11 +2,21 @@ import React, { Component } from 'react';
 import {UserContext} from "../../../contexts/userContext"
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
+import _ from "lodash";
 import About from "../about/about"
 import LoginPage from "../login/login-page";
 import {Container, Col, Row} from "react-bootstrap";
 
 export default class HomePage extends Component {
+    constructor(props, context){
+        super(props);
+
+        this.showLogin = _.isEmpty(context.user);
+
+        this.state = {
+
+        }
+    }
 
 
     render() {
@@ -22,9 +32,9 @@ export default class HomePage extends Component {
                   
                   
                     <Col sm={5} xs={12}>
-                        <div style={{width: "100%"}}>
+                        {this.showLogin ? <div style={{width: "100%"}}>
                             <LoginPage/>
-                        </div>
+                        </div> : ""}
                     </Col>
                 </Row>
               </Container>

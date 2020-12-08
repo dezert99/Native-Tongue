@@ -44,18 +44,18 @@ export default class App extends React.Component {
       
     }
 
-    this.state = {
-      user: {},
-      updateUser: this.updateUserContext,
-      logout: this.logout
-    }
-  }
+    let user = {}
 
-  componentDidMount() {
     if(read_cookie("user")){
       console.log("user cookie set", read_cookie("user"));
-      this.updateUserContext(read_cookie("user"));
-      console.log(window.location.href)
+      user = read_cookie("user");
+      // console.log(window.location.href)
+    }
+
+    this.state = {
+      user: user,
+      updateUser: this.updateUserContext,
+      logout: this.logout
     }
   }
 

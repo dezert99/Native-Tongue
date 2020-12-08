@@ -50,14 +50,14 @@ export default class About extends Component {
                     <br></br>
                     <h3>For all questions relating to the immigration process, please refer to the guidance from the US Citizenship and Immigration Services (USCIS).</h3>
                     <br></br><br></br>
-                    <body>
-                        <div class="list-group list-group-flush">
+                    <div>
+                        <div className="list-group list-group-flush">
                             <a href="https://www.uscis.gov/" class="list-group-item list-group-item-action">Website of the United States Citizenship and Immigration Services Agency</a>
                             <a href="https://egov.uscis.gov/casestatus/landing.do" class="list-group-item list-group-item-action">Check the status of immigration application, petition, or request.</a>
                             <a href="https://www.uscis.gov/forms/all-forms" class="list-group-item list-group-item-action">View and download all relevant forms.</a>
                             <a href="https://www.usa.gov/immigration-and-citizenship" class="list-group-item list-group-item-action">General guidance on US immigration policy and the processes involved.</a>
                         </div>
-                    </body>
+                    </div>
                     <br></br><br></br>
                 </div>
                 <Faq data={faq_data} styles={styles} config={config} />

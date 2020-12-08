@@ -17,10 +17,10 @@ const mysql = require('mysql');
 // Database Connection for Development
 console.log("proc",process.env)
 let connection = mysql.createPool({
-  host: '206.189.228.157',//process.env.DB_HOST,
-  user: 'nativeuser',//process.env.DB_USER,
-  database: 'nativetongue',//process.env.DB_DATABASE,
-  password: 'Nativetongue123!'//process.env.DB_PASS,
+  host: process.env.DB_HOST,
+  user:process.env.DB_USER,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASS,
 });
 
 
