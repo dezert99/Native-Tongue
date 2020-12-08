@@ -38,7 +38,7 @@ export default class App extends React.Component {
       this.setState({
         user: {}
       }, () => {
-        window.location.href = "/login";
+        window.location.href = "/";
       })
       
       

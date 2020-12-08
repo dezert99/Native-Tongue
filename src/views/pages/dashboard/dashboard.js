@@ -18,11 +18,7 @@ export default class Dashboard extends Component {
         super(props);
         console.log("in constructor",context.user);
         if(isEmpty(context.user)) {
-            window.location.href = "/";
-        }
-
-        this.state = {
-
+            window.location.href = "/login";
         }
     }
 
@@ -39,28 +35,29 @@ export default class Dashboard extends Component {
         console.log("appointments ", appointments);
         
     };
-    // componentDidUpdate(prevProps,prevState) {
-    //     if(prevState.user !== this.state.user){
-    //         console.log("Update: ",this.context)
-    //         this.setState({
-    //             user: this.context.user
-    //         })
-    //     }
-    // }
 
     render(){
         return (
         <Container className = "body">
             <Row>
                 <Col sm={4}>
-                    <div style={{width: "100%", border: "1px gray"}}>
-                        {/* {this.state.user === false ? "" :
-                            <ChatScreen email={this.state.user.first_name} room={this.state.user.user_id}/>
-                        } */}
-                        
-                    </div>
+                    <Row>
+                        <div style={{width: "100%", border: "1px solid black"}}>
+                            Details
+                        </div>
+                    </Row>
+                    <Row>
+                        <div style={{width: "100%", border: "1px gray"}}>
+                            {this.conext.user === false ? "" :
+                                <ChatScreen email={this.conext.user.first_name} room={this.conext.user.user_id}/>
+                            }
+                            
+                        </div>
+                    </Row>
+                    
                 </Col>
-              
+            
+                
               
                 <Col sm={8} xs={12} style = {{marginTop: "10px"}}>
                     {this.context.user === false ? "" :
@@ -68,7 +65,7 @@ export default class Dashboard extends Component {
                     }
                     
                 </Col>
-            </Row>
+            </Row> 
           </Container>
         )
     }

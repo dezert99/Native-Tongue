@@ -5,7 +5,9 @@ import 'react-splitter-layout/lib/index.css';
 import _ from "lodash";
 import About from "../about/about"
 import LoginPage from "../login/login-page";
+import SettingsPage from "../settings/settings-page";
 import {Container, Col, Row} from "react-bootstrap";
+import {isEmpty} from 'lodash';
 
 export default class HomePage extends Component {
     constructor(props, context){
@@ -14,13 +16,15 @@ export default class HomePage extends Component {
         this.showLogin = _.isEmpty(context.user);
 
         this.state = {
-
+            user: {},
         }
     }
 
 
     render() {
         
+        let user = this.context.user
+        console.log("USER:, ", user)
         return (
             <Container className = "body">
                 <Row>
@@ -32,9 +36,11 @@ export default class HomePage extends Component {
                   
                   
                     <Col sm={5} xs={12}>
-                        {this.showLogin ? <div style={{width: "100%"}}>
-                            <LoginPage/>
-                        </div> : ""}
+                        <div style={{width: "100%"}}>
+                            {this.showLogin? <LoginPage/> :
+                                <SettingsPage/>
+                            }
+                        </div>
                     </Col>
                 </Row>
               </Container>

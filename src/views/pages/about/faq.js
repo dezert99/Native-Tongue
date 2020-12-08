@@ -38,7 +38,7 @@ const config = {
  
 
 
-export default class frequent_questions extends Component {
+export default class FrequentQuestions extends Component {
 
 
     render() {
