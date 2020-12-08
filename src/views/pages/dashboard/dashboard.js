@@ -2,24 +2,42 @@ import React, {Component} from 'react'
 import {UserContext} from "../../../contexts/userContext"
 import {Container, Col, Row} from "react-bootstrap";
 import AppointmentPanel from "../../components/appointments/appointments-panel";
+import {get, isEmpty} from "lodash";
+import axios from "axios";
 import WelcomeScreen from "../chat/enter"
 import ChatScreen from "../chat/chat"
+
+const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+}
 
 export default class Dashboard extends Component {
     constructor(props, context) {
         super(props);
         console.log("in constructor",context.user);
-
-        this.state = {
-            
+        if(isEmpty(context.user)) {
+            window.location.href = "/";
         }
 
+        this.state = {
+
+        }
     }
-    componentDidMount = () => {
+
+    componentDidMount() {
         console.log("initial render", this.context, this.state);
-        // this.setState({
-        //     user: this.context.user
-        // })
+        let appointments = axios.get(`/appointment/${this.context.user.type}`,{params : {user_id: this.context.user.user_id}})
+        .then((response) => {
+            console.log("resp", response);
+            return response;
+        })
+        .catch(() => {
+            console.log("an error has occured in appointment call");
+        });
+        console.log("appointments ", appointments);
+        
     };
     // componentDidUpdate(prevProps,prevState) {
     //     if(prevState.user !== this.state.user){

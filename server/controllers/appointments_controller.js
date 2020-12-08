@@ -56,16 +56,16 @@ exports.findAll = (req, res) => {
 
 //Get
 exports.getApplicantAppointments = (req, res) => {
-  if (_.isEmpty(req.body)) {
+  
+  if (_.isEmpty(req.query)) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
 
-  let applicantUserId = req.body.applicantUserId;
-  console.log("params",req.params);
-  console.log("body",req.body);
+  let applicantUserId = req.query.user_id;
+  
 
   Appointment.getApplicantAppointments(applicantUserId, (err, data) => {
     if (err)
@@ -86,7 +86,7 @@ exports.getTranslatorAppointments = (req, res) => {
     return;
   }
 
-  let translatorUserId = req.body.translatorUserId;
+  let translatorUserId = req.body.user_id;
   console.log("params",req.params);
   console.log("body",req.body);
 
