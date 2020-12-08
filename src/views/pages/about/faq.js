@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Faq from "react-faq-component";
+import Faq from "react-faq-component" ;
 let faq_data = {
     title: "FAQ",
     rows: [
@@ -38,7 +38,7 @@ const config = {
  
 
 
-export default class About extends Component {
+export default class frequent_questions extends Component {
 
 
     render() {
