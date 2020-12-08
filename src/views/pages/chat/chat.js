@@ -128,7 +128,7 @@ class ChatScreen extends React.Component {
           }
       }
       getToken = async (email) => {
-        const response = await axios.get(`http://localhost:5000/token/${email}`);
+        const response = await axios.get(`/token/${email}`);
         const { data } = response;
         return data.token;
       }

@@ -22,7 +22,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
     "react-splitter-layout": "^4.0.0",
-    "twilio-chat": "^4.0.0"
+    "twilio-chat": "^4.0.0",
+    "twilio": "^3.52.0"
   },
   "scripts": {
     "start": "react-scripts start",
