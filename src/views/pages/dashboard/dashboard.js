@@ -32,21 +32,30 @@ export default class Dashboard extends Component {
         <Container className = "body">
             <Row>
                 <Col sm={7}>
-                    <div style={{width: "100%", border: "1px gray"}}>
-                        {this.state.user === false ? "" :
-                            <ChatScreen email={this.state.user.first_name} room={this.state.user.user_id}/>
-                        }
-                        
-                    </div>
+                    <Row>
+                        <div style={{width: "100%", border: "1px solid black"}}>
+                            Details
+                        </div>
+                    </Row>
+                    <Row>
+                        <div style={{width: "100%", border: "1px gray"}}>
+                            {this.state.user === false ? "" :
+                                <ChatScreen email={this.state.user.first_name} room={this.state.user.user_id}/>
+                            }
+                            
+                        </div>
+                    </Row>
+                    
                 </Col>
-              
+            
+                
               
                 <Col sm={5} xs={12}>
                     <div style={{width: "100%", border: "1px solid black"}}>
                         comp
                     </div>
                 </Col>
-            </Row>
+            </Row> 
           </Container>
         )
     }
