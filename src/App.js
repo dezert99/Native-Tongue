@@ -83,7 +83,7 @@ export default class App extends React.Component {
           </Navbar> */}
   
           <Navbar bg="light" expand="lg">
-            <LinkContainer to="/">
+            <LinkContainer to="/home">
               <Nav.Link>
                 <Navbar.Brand >Native Tounge</Navbar.Brand> 
               </Nav.Link>
@@ -91,13 +91,16 @@ export default class App extends React.Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
-                <LinkContainer to="/about">
-                  <Nav.Link>About</Nav.Link>
+                <LinkContainer to="/dashboard">
+                  <Nav.Link>Dashboard</Nav.Link>
                 </LinkContainer>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                <LinkContainer to="/faq">
+                  <Nav.Link>FAQ</Nav.Link>
+                </LinkContainer>
+                <NavDropdown title="Relevant Agencies" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#action/3.3">US Citizens and Immigration Service</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.4">Department of Homeland Security</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>

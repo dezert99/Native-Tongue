@@ -62,6 +62,7 @@ export default class LoginForm extends Component {
             }
             this.context.updateUser(data);
             bake_cookie("user", data);
+            
             window.location.href = "/";
         })
         .catch(() => {
