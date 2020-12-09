@@ -48,8 +48,8 @@ export default class Dashboard extends Component {
                     </Row>
                     <Row>
                         <div style={{width: "100%", border: "1px gray"}}>
-                            {this.conext.user === false ? "" :
-                                <ChatScreen email={this.conext.user.first_name} room={this.conext.user.user_id}/>
+                            {this.context.user === false ? "" :
+                                <ChatScreen email={this.context.user.first_name} room={this.context.user.user_id}/>
                             }
                             
                         </div>

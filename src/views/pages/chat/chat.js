@@ -140,6 +140,7 @@ class ChatScreen extends React.Component {
           this.setState({ text: "", loading: false });
         }
       };
+
       render() {
         const { loading, text, messages, channel } = this.state;
         const { location } = this.props;
