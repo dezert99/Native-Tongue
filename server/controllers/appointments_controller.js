@@ -79,14 +79,15 @@ exports.getApplicantAppointments = (req, res) => {
 
 //Get
 exports.getTranslatorAppointments = (req, res) => {
-  if (_.isEmpty(req.body)) {
+  if (_.isEmpty(req.query)) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
 
-  let translatorUserId = req.body.user_id;
+  let translatorUserId = req.query.user_id;
+  
   console.log("params",req.params);
   console.log("body",req.body);
 

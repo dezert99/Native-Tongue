@@ -61,6 +61,7 @@ Appointment.getApplicantAppointments = async (applicantID,result) => {
   let pending_accepted = [];
   let open = [];
   let appointments = []
+  let all = {};
   for(let i = 0; i < translatorIds.length; i++){
     appointments = await grabSQLData("SELECT * FROM appointments WHERE translator_user_id=? AND (status!='reserved' OR applicant_user_id=?)", [translatorIds[i].user_id,applicantID])
     .catch(err => {
@@ -75,23 +76,25 @@ Appointment.getApplicantAppointments = async (applicantID,result) => {
         let translatorData = await grabSQLData("SELECT first_name, last_name FROM users WHERE user_id = ?",[appointment["translator_user_id"]]);
         appointment["translator"] = translatorData[0];
         console.log("app after", appointment);
-        if(appointments[i].status === "reserved" || appointments[i].status === "pending"){
+        if(appointment.status === "reserved" || appointment.status === "pending"){
           pending_accepted.push(appointment);
         }
         else {
           open.push(appointment);
         }
+        all[appointment.appointment_id] = appointment;
       }
     }
   }
   result(null, {
     open: open,
-    pending_accepted: pending_accepted
+    pending_accepted: pending_accepted,
+    all: all
   });
 };
 
-Appointment.getTranslatorAppointments = (translatorID,result) => {
-  sql.query("SELECT * FROM appointments WHERE translator_user_id=?", [translatorID], (err, res) => {
+Appointment.getTranslatorAppointments = async (translatorID,result) => {
+  sql.query("SELECT * FROM appointments WHERE translator_user_id=?", [translatorID], async (err, res) => {
     if (err) {
       console.log("error in appointments model getAPlicantScheduled: ", err);
       result(null, err);
@@ -99,19 +102,28 @@ Appointment.getTranslatorAppointments = (translatorID,result) => {
     }
     let pending_accepted = [];
     let open = [];
+    let all = {};
 
     for(let i = 0; i< res.length; i++) {
-      if(res[i].status === "reserved" || res[i].status === "pending"){
-        pending_accepted.push(res[i]);
+      let appointment = res[i];
+      console.log("app", appointment, appointment["translator_user_id"]);
+      let translatorData = await grabSQLData("SELECT first_name, last_name FROM users WHERE user_id = ?",[appointment["translator_user_id"]]);
+      appointment["translator"] = translatorData[0];
+      console.log("app after", appointment);
+      if(appointment.status === "reserved" || appointment.status === "pending"){
+        pending_accepted.push(appointment);
       }
       else {
-        open.push(res[i]);
+        open.push(appointment);
       }
-    }
+      all[appointment.appointment_id] = appointment;
+  }
+    
     console.log("appointments: ", res);
     result(null, {
       open: open,
-      pending_accepted: pending_accepted
+      pending_accepted: pending_accepted,
+      all: all
     });
   });
 };
