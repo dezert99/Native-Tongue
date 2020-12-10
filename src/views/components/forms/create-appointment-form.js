@@ -7,9 +7,9 @@ import {bake_cookie, read_cookie, delete_cookie} from "../../../utils/cookies"
 import {UserContext} from '../../../contexts/userContext';
 // import TimePickerPage from "./time-picker"
 // import BasicDateTimePicker from './time-picker'
-import TimePicker from 'react-gradient-timepicker';
-import {Timepicker} from 'react-timepicker';
-import 'react-timepicker/timepicker.css';
+// import TimePicker from 'react-gradient-timepicker';
+// import {Timepicker} from 'react-timepicker';
+// import 'react-timepicker/timepicker.css';
 
 
 const config = {
@@ -109,16 +109,8 @@ export default class CreateAppointmentForm extends Component {
                 {/* <Form.Group sm = {6}>
                     <Form.Label>45 Minute Appointment Start</Form.Label>
                     <TimePickerPage />
-                </Form.Group> */}
-                <TimePicker
-                    // theme="Bourbon"
-                    className="timepicker"
-                    placeholder="Start Time"
-                    onSet={(val) => {
-                        this.timeStartRef = val
-                        console.log("VAL:",val);
-                    }}
-                />
+                // </Form.Group> */}
+
                 
 
                 <Form.Group controlId="formBasicPassword">
