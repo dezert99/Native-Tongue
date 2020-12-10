@@ -165,10 +165,106 @@ exports.update = (req, res) => {
       }
     );
   };
+// Todo implement security
+  exports.requestSlot = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+
+    let id =  req.body.appointmentId;
+    let reason = req.body.reason;
+  
+    Appointment.requestSlot(
+      id,reason,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found appointment with id ${req.params.appointmentId}.`
+            });
+          } 
+          else {
+            res.status(500).send({
+              message: "Error updating appointment with id " + req.body.appointmentId
+            });
+          }
+        } else res.send(data);
+      }
+    );
+  };
+
+  exports.cancelReservation = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+
+    let id =  req.body.appointmentId;
+  
+    Appointment.cancelReservation(
+      id,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found appointment with id ${req.params.appointmentId}.`
+            });
+          } 
+          else {
+            res.status(500).send({
+              message: "Error updating appointment with id " + req.body.appointmentId
+            });
+          }
+        } else res.send(data);
+      }
+    );
+  };
+
+  exports.respondToRequest = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+      res.status(400).send({
+        message: "Content can not be empty!"
+      });
+    }
+
+    let id =  req.body.appointmentId;
+    let status = req.body.status;
+  
+    Appointment.respondToRequest(
+      id, status,
+      (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+            res.status(404).send({
+              message: `Not found appointment with id ${req.body.appointmentId}.`
+            });
+          } 
+          else {
+            res.status(500).send({
+              message: "Error updating appointment with id " + req.body.appointmentId
+            });
+          }
+        } else res.send(data);
+      }
+    );
+  };
 
 // Delete an appointment with the specified appointmentId in the request
 exports.delete = (req, res) => {
-    Appointment.remove(req.params.appointmentId, (err, data) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+
+  let id =  req.body.appointmentId;
+    Appointment.remove(id, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({

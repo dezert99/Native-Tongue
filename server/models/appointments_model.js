@@ -1,5 +1,6 @@
 const sql = require("../database");
 const _ = require("lodash");
+const { isNull } = require("lodash");
 
 function grabSQLData(sqlstr, params){
   return new Promise((resolve, reject) => {
@@ -128,10 +129,36 @@ Appointment.getTranslatorAppointments = async (translatorID,result) => {
   });
 };
 
-Appointment.requestSlot = ((appointmentId, userId, result) => {
-  sql.query("UPDATE appointments WHERE appointment_id=? SET applicant_user_id=?, status='pending'", [appointmentId, userId], (err, res) => {
+Appointment.requestSlot = ((appointmentId, reason, userId, result) => {
+  sql.query("UPDATE appointments SET applicant_user_id=?, description=?, status='pending' WHERE appointment_id=?", [reason, userId, appointmentId], (err, res) => {
     if (err) {
-      console.log("error in appointments model getAPlicantScheduled: ", err);
+      console.log("error in appointments model requestSlot: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("appointments: ", res);
+    result(null, res);
+  });
+})
+
+Appointment.cancelReservation = ((appointmentId, result) => {
+  sql.query("UPDATE appointments  SET applicant_user_id=?, description=?, status='open' WHERE appointment_id=?", [null,null, appointmentId], (err, res) => {
+    if (err) {
+      console.log("error in appointments model cancelReservation: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("appointments: ", res);
+    result(null, res);
+  });
+})
+
+Appointment.respondToRequest = ((appointmentId, newStatus, result) => {
+  sql.query("UPDATE appointments  SET  status=? WHERE appointment_id=?", [newStatus,appointmentId], (err, res) => {
+    if (err) {
+      console.log("error in appointments model acceptRequest: ", err);
       result(null, err);
       return;
     }

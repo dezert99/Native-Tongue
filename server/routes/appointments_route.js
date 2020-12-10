@@ -18,6 +18,15 @@ module.exports = app => {
     // Update a appointment with appointmentname
     app.put("/appointment", appointment.update);
 
+    // Update a appointment with appointmentname
+    app.put("/appointment/cancel/reservation", appointment.cancelReservation);
+
+    // Update a appointment with appointmentname
+    app.put("/appointment/respond", appointment.respondToRequest);
+
+    // Update a appointment with appointmentname
+    app.delete("/appointment/cancel", appointment.delete);
+
     // Delete a appointment with appointmentname
     // app.delete("/appointment", appointment.delete);
 
