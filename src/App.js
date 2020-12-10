@@ -102,12 +102,19 @@ export default class App extends React.Component {
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4">Department of Homeland Security</NavDropdown.Item>
                 </NavDropdown>
-                  {!isEmpty(this.state.user)?<Col xs="auto">
+
+                  {!isEmpty(this.state.user) && this.state.user.type === "translator" ?<Col sm={10}>
+                    <LinkContainer to="/create-appointment">
+                      <Nav.Link>Create Appointment Slot</Nav.Link>
+                    </LinkContainer>
+                  </Col>: "" }
+
+                  {!isEmpty(this.state.user)?<Col sm={4} xs={12}>
                 Hello {this.state.user.first_name}
                 <span class = "logout" onClick = {this.logout}> Logout</span>
                 </Col> : <Link to="/login">Login</Link>}
               </Nav>
-            </Navbar.Collapse>
+            </Navbar.Collapse> 
             
             
           </Navbar>

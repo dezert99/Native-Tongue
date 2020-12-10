@@ -10,6 +10,7 @@ import LoginPage from "./views/pages/login/login-page";
 import RegisterPage from "./views/pages/register/register-page";
 import Dashboard from "./views/pages/dashboard/dashboard";
 import FrequentQuestions from './views/pages/about/faq';
+import CreateAppointment from './views/pages/appointments/create-appointment.js';
 
 export default class Routes extends Component {
   
@@ -31,6 +32,10 @@ export default class Routes extends Component {
             
             <Route exact path="/login" >
               <LoginPage/>
+            </Route>
+            
+            <Route exact path="/create-appointment" >
+              <CreateAppointment/>
             </Route>
 
             <Route path="/signup">

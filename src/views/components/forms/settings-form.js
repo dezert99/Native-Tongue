@@ -24,8 +24,8 @@ export default class SettingsForm extends Component {
             error: false,
         }
 
-        this.onErrorClose = this.onErrorClose.bind(this);
-        this.register = this.register.bind(this);
+        // this.onErrorClose = this.onErrorClose.bind(this);
+        // this.register = this.register.bind(this);
 
         this.usernameRef = React.createRef();
         this.passwordRef = React.createRef();
@@ -38,48 +38,6 @@ export default class SettingsForm extends Component {
         this.depRef = React.createRef();
         this.nationalityRef = React.createRef();
         
-    }
-
-    login() {
-        const username = this.usernameRef.current.value;
-
-        if(!validateEmail(username)){
-            this.setState({
-                error: "Please enter a valid email address"
-            })
-            return;
-        }
-        const password = require("crypto")
-        .createHash("sha256")
-        .update(this.passwordRef.current.value)
-        .digest("base64");
-
-        axios.post("/login", {username: username,password: password}, config)
-        .then((response) => {
-            console.log(response);
-            const data = response.data;
-            if(data.error){
-                this.setState({
-                    error: data.message
-                })
-                return;
-            }
-            this.context.updateUser(data);
-            bake_cookie("user", data);
-            window.location.href = "/";
-        })
-        .catch(() => {
-            this.setState({
-                error: "An error has occured, please try again"
-            })
-        });
-        console.log(username,password);
-    }
-
-    onErrorClose() {
-        this.setState({
-            error: false
-        })
     }
 
     register = (e) => {
@@ -160,10 +118,13 @@ export default class SettingsForm extends Component {
         return;
     }
 
+    update() {}
+
     render() {
 
         return (
-            <Form onSubmit={this.register}>
+            <Form >
+                {/* onSubmit={this.update} */}
                 {this.state.error ? 
                     <Alert dismissible variant="danger" onClose={this.onErrorClose}>{this.state.error}</Alert>
                 :""}

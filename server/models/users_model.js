@@ -10,14 +10,15 @@ const Users = function(Users) {
     this.port = Users.port;
     this.dependants = Users.dependants;
     this.nationality = Users.nationality; 
-
-    
+    this.type = Users.type;
 };
+
 var date = new Date();
 const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
 
 Users.create = (newUser, result) => {
-    sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate], (err, res) => {
+    console.log("TYPE IN SQL:", newUser.type)
+    sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?, type=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate, newUser.type], (err, res) => {
       if (err) {
         console.log("error in users model: ", err);
         result(err, null);

@@ -27,6 +27,7 @@ exports.create = (req, res) => {
     port: req.body.port,
     dependants: req.body.dependants,
     nationality: req.body.nationality, 
+    type: req.body.type,
   });
 
   // Save User in the database

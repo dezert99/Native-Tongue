@@ -5,6 +5,11 @@ import axios from 'axios'
 import {validateEmail} from "../../../utils/general";
 import {bake_cookie, read_cookie, delete_cookie} from "../../../utils/cookies"
 import {UserContext} from '../../../contexts/userContext';
+// import TimePickerPage from "./time-picker"
+// import BasicDateTimePicker from './time-picker'
+import TimePicker from 'react-gradient-timepicker';
+import {Timepicker} from 'react-timepicker';
+import 'react-timepicker/timepicker.css';
 
 
 const config = {
@@ -16,123 +21,53 @@ const config = {
 
 
 
-export default class RegisterForm extends Component {
+export default class CreateAppointmentForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             error: false,
         }
+        
 
-        this.onErrorClose = this.onErrorClose.bind(this);
+        // this.onErrorClose = this.onErrorClose.bind(this);
         this.register = this.register.bind(this);
 
-        this.usernameRef = React.createRef();
-        this.passwordRef = React.createRef();
-        this.confPasswordRef = React.createRef();
-        this.dobRef = React.createRef();
-        this.fNameRef = React.createRef();
-        this.lNameRef = React.createRef();
-        this.languageRef = React.createRef();
-        this.portRef = React.createRef();
-        this.depRef = React.createRef();
-        this.nationalityRef = React.createRef();
-        this.typeRef = React.createRef();
+        this.timeStart = React.createRef();
+        this.timeEnd = React.createRef();
+        this.description = React.createRef();
+        this.translatorUserId = React.createRef();
+        this.applicantUserId = React.createRef();
+        this.status = React.createRef();
+        this.location = React.createRef();
         
+    }
+    onChange (hours, minutes) {
+        console.log("Hours:", hours)
     }
     
 
-    login() {
-        const username = this.usernameRef.current.value;
-
-        if(!validateEmail(username)){
-            this.setState({
-                error: "Please enter a valid email address"
-            })
-            return;
-        }
-        const password = require("crypto")
-        .createHash("sha256")
-        .update(this.passwordRef.current.value)
-        .digest("base64");
-
-        axios.post("/login", {username: username,password: password}, config)
-        .then((response) => {
-            console.log(response);
-            const data = response.data;
-            if(data.error){
-                this.setState({
-                    error: data.message
-                })
-                return;
-            }
-            this.context.updateUser(data);
-            bake_cookie("user", data);
-            window.location.href = "/";
-        })
-        .catch(() => {
-            this.setState({
-                error: "An error has occured, please try again"
-            })
-        });
-        console.log(username,password);
-    }
-
-    onErrorClose() {
-        this.setState({
-            error: false
-        })
-    }
-
     register = (e) => {
         e.preventDefault();
-        let username = this.usernameRef.current.value; 
-        let password = this.passwordRef.current.value; 
-        let confPassword = this.confPasswordRef.current.value; 
-        let dob = this.dobRef.current.value; 
-        let fName = this.fNameRef.current.value; 
-        let lName = this.lNameRef.current.value; 
-        let langauge = this.languageRef.current.value; 
-        let port = this.portRef.current.value; 
-        let dependants = this.depRef.current.value; 
-        let nationality  = this.nationalityRef.current.value; 
-        let type = this.typeRef.current.value;
-        console.log("TYPE:", type)
-        const hashedPassword = require("crypto")
-        .createHash("sha256")
-        .update(this.passwordRef.current.value)
-        .digest("base64");
-
-        if(!validateEmail(username)){
-            this.setState({
-                error: "Please enter a valid email address"
-            })
-            window.scrollTo(0, 0);
-            return;
-        }
+        let timeStart = this.timeStartRef.current.value; 
+        let timeEnd = this.timeEndRef.current.value; 
+        let description = this.descriptionRef.current.value; 
+        let translatorUserId = this.translatorUserIdRef.current.value; 
+        let applicantUserId = this.applicantUserIdRef.current.value; 
+        let status = this.statusRef.current.value; 
+        let location = this.locationRef.current.value; 
         
-        if(confPassword != password) {
-            this.setState({
-                error: "Please confirm the entered passwords match"
-            })
-            window.scrollTo(0, 0);
-            return; 
-        }
-
         let data = {
-            username: username,
-            password: hashedPassword,
-            dob: dob, 
-            fName: fName, 
-            lName: lName, 
-            langauge: langauge,
-            port: port,
-            dependants: dependants,
-            nationality: nationality, 
-            type: type,
+            timeStart: timeStart,
+            timeEnd: timeEnd,
+            description: description, 
+            translatorUserId: translatorUserId, 
+            applicantUserId: applicantUserId, 
+            status: status,
+            location: location,
         }
 
-        axios.post("/user", data, config)
+        axios.post("/appointments", data, config)
         .then((response) => {
             console.log(response);
             const data = response.data;
@@ -142,13 +77,13 @@ export default class RegisterForm extends Component {
                 })
                 return;
             }
-            window.location.href = "/login";
+            window.location.href = "/dashboard";
         })
         .catch((err) => {
             console.log(err.response.data);
             if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
                 this.setState({
-                    error: "This email is already taken, please choose another or login."
+                    error: "You have already created this appointment slot. Unless you want to create another you ready to go."
                 })
                 window.scrollTo(0, 0);
             }
@@ -171,10 +106,20 @@ export default class RegisterForm extends Component {
                 {this.state.error ? 
                     <Alert dismissible variant="danger" onClose={this.onErrorClose}>{this.state.error}</Alert>
                 :""}
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" ref ={this.usernameRef}/>
-                </Form.Group>
+                {/* <Form.Group sm = {6}>
+                    <Form.Label>45 Minute Appointment Start</Form.Label>
+                    <TimePickerPage />
+                </Form.Group> */}
+                <TimePicker
+                    // theme="Bourbon"
+                    className="timepicker"
+                    placeholder="Start Time"
+                    onSet={(val) => {
+                        this.timeStartRef = val
+                        console.log("VAL:",val);
+                    }}
+                />
+                
 
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
@@ -232,4 +177,4 @@ export default class RegisterForm extends Component {
         );
     }
 }
-RegisterForm.contextType = UserContext;
+CreateAppointmentForm.contextType = UserContext;
