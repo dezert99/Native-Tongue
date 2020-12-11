@@ -25,6 +25,9 @@ module.exports = app => {
     app.put("/appointment/respond", appointment.respondToRequest);
 
     // Update a appointment with appointmentname
+    app.put("/appointment/request", appointment.requestSlot);
+
+    // Update a appointment with appointmentname
     app.delete("/appointment/cancel", appointment.delete);
 
     // Delete a appointment with appointmentname

@@ -1,23 +1,59 @@
 import React, {Component} from 'react';
-import {Card, Button, Form} from 'react-bootstrap'
-import sqlToJsDate from "../../../utils/date"
-import {UserContext} from "../../../contexts/userContext"
+import {Card, Button, Form} from 'react-bootstrap';
+import sqlToJsDate from "../../../utils/date";
+import {UserContext} from "../../../contexts/userContext";
+import axios from 'axios';
 
+const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+}
 
 export default class AppointmentDetail extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            appointment: props.appointment,
+            description: props.appointment.description
+        }
 
+        this.descRef = React.createRef();
+    }
+
+    componentDidUpdate() {
+        if(this.state.appointment != this.props.appointment){
+            this.setState({
+                appointment: this.props.appointment,
+                description: this.props.appointment.description
+            });
         }
     }
 
+    handleChange = (event) => {
+        let description = event.target.value;
+        this.setState({description: description});
+    }
+
+    buttonClick = (endpoint, method, data) => {
+        let {retrieveAppointments} = this.props;
+        axios({
+            method: method,
+            url: endpoint,
+            data: data,
+            config: config
+          })
+        .then(function (response) {
+            retrieveAppointments();
+        //   response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+        });
+    }
+
     render() {
-        const {appointment} = this.props;
+        const {appointment} = this.state;
         const {
             appointment_id,
-            description,
             location,
             status,
             time_end,
@@ -31,20 +67,33 @@ export default class AppointmentDetail extends Component {
         let buttons = [];
 
         if(status === "reserved") {
-            buttons.push(<Button variant="danger">Cancel reservation</Button>);
+            buttons.push(<Button variant="danger" onClick={() => {
+                this.buttonClick('/appointment/cancel/reservation', 'put', {appointmentId: appointment_id});
+            }}>Cancel reservation</Button>);
         }
         if(status === "open" && user.type === "applicant") {
-            buttons.push(<Button variant="primary">Reserve appointment</Button>);
+            buttons.push(<Button variant="primary" onClick={() => {
+                let desc = document.querySelector("#reason").value;
+                this.buttonClick('/appointment/request', 'put', {appointmentId: appointment_id, userId: user.user_id, reason: desc})
+            }}>Reserve appointment</Button>);
         }
         if(status === "pending" && user.type==="applicant") {
-            buttons.push(<Button variant="danger">Cancel reservation</Button>)
+            buttons.push(<Button variant="danger" onClick={() => {
+                this.buttonClick('/appointment/cancel/reservation', 'put', {appointmentId: appointment_id});
+            }}>Cancel reservation</Button>)
         }
         else if(status === "pending") {
-            buttons.push(<Button variant="success">Accept</Button>)
-            buttons.push(<Button variant="danger">Reject</Button>)
+            buttons.push(<Button variant="success" onClick={() => {
+                this.buttonClick('/appointment/respond', 'put', {appointmentId: appointment_id, status:"reserved"});
+            }}>Accept</Button>)
+            buttons.push(<Button variant="danger" onClick={() => {
+                this.buttonClick('/appointment/respond', 'put', {appointmentId: appointment_id, status: "open"});
+            }}>Reject</Button>)
         }
         if(user.type === "translator") {
-            buttons.push(<Button variant="danger">Cancel appointment</Button>)
+            buttons.push(<Button variant="danger" onClick={() => {
+                this.buttonClick('/appointment/cancel', 'delete', {appointmentId: appointment_id});
+            }}>Cancel appointment</Button>)
         }
         
         return (
@@ -56,13 +105,16 @@ export default class AppointmentDetail extends Component {
                         <strong>Location</strong>: {location}
                     </Card.Text>
                     <Card.Text>
+                        <strong>Time</strong>: {time}
+                    </Card.Text>
+                    <Card.Text>
                         <strong>Status</strong>: {status}
                     </Card.Text>
                     <Card.Text>
                         <strong>Reason for request</strong>:
                     </Card.Text>
-                    <Form.Control as = "textarea" rows={4} readOnly={user.type === "translator" || status === "reserved"}>
-                        {description}
+                    <Form.Control as ="textarea" onChange={this.handleChange} id = "reason" value ={this.state.description === null ? "" : this.state.description} readOnly={user.type === "translator" || status === "reserved" || status === "pending"}>
+                        
                     </Form.Control>
                     {buttons}
                 </Card.Body>

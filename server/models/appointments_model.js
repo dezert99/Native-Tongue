@@ -130,7 +130,7 @@ Appointment.getTranslatorAppointments = async (translatorID,result) => {
 };
 
 Appointment.requestSlot = ((appointmentId, reason, userId, result) => {
-  sql.query("UPDATE appointments SET applicant_user_id=?, description=?, status='pending' WHERE appointment_id=?", [reason, userId, appointmentId], (err, res) => {
+  sql.query("UPDATE appointments SET applicant_user_id=?, description=?, status='pending' WHERE appointment_id=?", [userId, reason, appointmentId], (err, res) => {
     if (err) {
       console.log("error in appointments model requestSlot: ", err);
       result(null, err);

@@ -176,9 +176,10 @@ exports.update = (req, res) => {
 
     let id =  req.body.appointmentId;
     let reason = req.body.reason;
+    let userId = req.body.userId;
   
     Appointment.requestSlot(
-      id,reason,
+      id,reason,userId,
       (err, data) => {
         if (err) {
           if (err.kind === "not_found") {

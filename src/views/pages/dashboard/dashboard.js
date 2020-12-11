@@ -29,22 +29,7 @@ export default class Dashboard extends Component {
 
     componentDidMount() {
         console.log("initial render", this.context, this.state);
-        let appointments = axios.get(`/appointment/${this.context.user.type}`,{params : {user_id: this.context.user.user_id}})
-        .then((response) => {
-            console.log("resp", response);
-            let appointments = response.data;
-            this.setState(
-                {
-                    appointments: appointments,
-                }
-            )
-            return response;
-        })
-        .catch(() => {
-            console.log("an error has occured in appointment call");
-        });
-        console.log("appointments ", appointments);
-        
+        this.retrieveAppointments();
     };
 
     updateCurrentAppointment = (id) => {
@@ -53,6 +38,36 @@ export default class Dashboard extends Component {
                 currentAppointment: this.state.appointments.all[id]
             }, console.log("updated",this.state));
         }
+    }
+
+    retrieveAppointments = () => {
+        let appointments = axios.get(`/appointment/${this.context.user.type}`,{params : {user_id: this.context.user.user_id}})
+        .then((response) => {
+            console.log("resp", response);
+            let appointments = response.data;
+            if(isEmpty(this.state.currentAppointment)){
+                this.setState(
+                    {
+                        appointments: appointments,
+                    }
+                )
+            }
+            else {
+                let currAppointment = appointments.all[this.state.currentAppointment.appointment_id];
+                this.setState(
+                    {
+                        appointments: appointments,
+                        currentAppointment: currAppointment
+                    }
+                )
+            }
+           
+            return response;
+        })
+        .catch(() => {
+            console.log("an error has occured in appointment call");
+        });
+        console.log("appointments ", appointments);
     }
 
     render(){
@@ -64,7 +79,7 @@ export default class Dashboard extends Component {
                     <Row>
                         <div style={{width: "100%", marginTop: "10px"}}>
                             {!isEmpty(this.state.currentAppointment) ?
-                            <AppointmentDetail appointment = {this.state.currentAppointment} />
+                            <AppointmentDetail appointment = {this.state.currentAppointment} retrieveAppointments={this.retrieveAppointments}/>
                             : <Card><Card.Body>Please select an appointment to view its details.</Card.Body></Card>}
                         </div>
                     </Row>
@@ -83,7 +98,7 @@ export default class Dashboard extends Component {
               
                 <Col sm={7} xs={12} style = {{marginTop: "10px"}}>
                     {this.context.user === false || isEmpty(this.state.appointments)? "" :
-                        <AppointmentPanel user = {this.context.user} appointments={this.state.appointments} updateApp ={this.updateCurrentAppointment}/>
+                        <AppointmentPanel user = {this.context.user} appointments={this.state.appointments}  updateApp ={this.updateCurrentAppointment}/>
                     }
                 </Col>
             </Row> 
