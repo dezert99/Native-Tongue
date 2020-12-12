@@ -97,7 +97,7 @@ export default class AppointmentDetail extends Component {
         }
         
         return (
-            <Card>
+            <Card className = "apt-detail">
                 <Card.Header as="h5">Appointment</Card.Header>
                 <Card.Body>
                     <Card.Title>{`Translator: ${translator.first_name} ${translator.last_name}`}</Card.Title>
@@ -118,6 +118,7 @@ export default class AppointmentDetail extends Component {
                     </Form.Control>
                     {buttons}
                 </Card.Body>
+                {this.props.children}
             </Card>
         )
     }

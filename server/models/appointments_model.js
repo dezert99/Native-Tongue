@@ -1,6 +1,14 @@
 const sql = require("../database");
 const _ = require("lodash");
 const { isNull } = require("lodash");
+var nodemailer = require('nodemailer'); 
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 function grabSQLData(sqlstr, params){
   return new Promise((resolve, reject) => {
@@ -129,7 +137,43 @@ Appointment.getTranslatorAppointments = async (translatorID,result) => {
   });
 };
 
-Appointment.requestSlot = ((appointmentId, reason, userId, result) => {
+async function sendEmail(userId,subject ,content) {
+  let email = await grabSQLData("SELECT email FROM users WHERE user_id=?",[userId]);
+  email = email[0].email;
+
+  var mailOptions = {
+    from: process.env.EMAIL,
+    to: email,
+    subject: subject,
+    html: content
+  }
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  }); 
+}
+
+Appointment.requestSlot =  (async (appointmentId, reason, userId, result) => {
+  console.log(process.env.EMAIL, process.env.EMAIL_PASS)
+  
+
+  let translatorId = await grabSQLData("SELECT translator_user_id FROM appointments WHERE appointment_id=?", [appointmentId])
+  .catch(err => {
+    console.log("error in appointments model getAPlicantScheduled: ", err);
+    result(null, err);
+    return;
+  });
+
+  translatorId = translatorId[0].translator_user_id;
+  console.log("translatorId", translatorId);
+
+  let template = `<h2 style="text-align: center">You have a new pending appointment!</h2> <p style="text-align: center"> Please <a href="http://localhost:3000">log in</a> to view it<p>`;
+
+  sendEmail(translatorId, 'You have a new pending appointment', template);
+
   sql.query("UPDATE appointments SET applicant_user_id=?, description=?, status='pending' WHERE appointment_id=?", [userId, reason, appointmentId], (err, res) => {
     if (err) {
       console.log("error in appointments model requestSlot: ", err);

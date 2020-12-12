@@ -73,29 +73,19 @@ export default class Dashboard extends Component {
     render(){
         let {user} = this.context;
         return (
-        <Container className = "body">
+        <Container className = "body dashboard">
             <Row>
                 <Col sm={5}>
                     <Row>
                         <div style={{width: "100%", marginTop: "10px"}}>
                             {!isEmpty(this.state.currentAppointment) ?
-                            <AppointmentDetail appointment = {this.state.currentAppointment} retrieveAppointments={this.retrieveAppointments}/>
+                            <AppointmentDetail appointment = {this.state.currentAppointment} retrieveAppointments={this.retrieveAppointments}>
+                                <div className = "chat__container"><ChatScreen email={this.context.user.first_name} room={this.state.currentAppointment.appointment_id}/></div>
+                            </AppointmentDetail>
                             : <Card><Card.Body>Please select an appointment to view its details.</Card.Body></Card>}
                         </div>
                     </Row>
-                    <Row>
-                        <div style={{width: "100%", border: "1px gray"}}>
-                            {this.context.user === false  ? "" :
-                                <ChatScreen email={this.context.user.first_name} room={this.context.user.user_id}/>
-                            }
-                            
-                        </div>
-                    </Row>
-                    
                 </Col>
-            
-                
-              
                 <Col sm={7} xs={12} style = {{marginTop: "10px"}}>
                     {this.context.user === false || isEmpty(this.state.appointments)? "" :
                         <AppointmentPanel user = {this.context.user} appointments={this.state.appointments}  updateApp ={this.updateCurrentAppointment}/>

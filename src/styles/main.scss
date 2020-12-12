@@ -18,3 +18,29 @@
         color: #3999ff
     }
 }
+
+.chat {
+
+    &__container {
+        width: auto;
+        margin-left: 20px;
+        margin-right: 20px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+}
+
+.dashboard {
+    margin-bottom: 75px;
+}
+
+#reason {
+    margin-bottom: 15px;
+}
+
+.apt-detail {
+
+    button {
+        margin-right: 10px;
+    }
+}

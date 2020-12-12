@@ -51,12 +51,24 @@ export default class AppointmentPanel extends Component {
         const endTime = this.sqlToJsDate(appointment.time_end.replace("T"," ").replace("Z", ""))
         const {updateApp} = this.props;
         const content = `${startTime.toLocaleDateString()} ${startTime.toLocaleTimeString().substring(0,5)}${startTime.toLocaleTimeString().substring(8)} - ${endTime.toLocaleDateString()} ${endTime.toLocaleTimeString().substring(0,5)}${endTime.toLocaleTimeString().substring(8)}`
+        const {status} = appointment;
+        let variant = "light";
 
+        switch(status){
+            case "reserved":
+                variant = "success";
+                break;
+            case "open":
+                variant = "primary";
+                break;
+            default:
+                break;
+        }
         return ( 
             <ListGroup.Item> 
                 <Button 
                     style={{width:"100%;"}}
-                    variant="light" 
+                    variant={variant === "light" ? "light" :`outline-${variant}`} 
                     onClick={ () => 
                         {
                             console.log("appointment id clicked:",appointment.appointment_id); 
@@ -108,7 +120,7 @@ export default class AppointmentPanel extends Component {
                             </ListGroup>
                         </Card>
                     </Col>
-            </Row>
+                </Row>
           </Container>
         )
     }
