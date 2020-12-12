@@ -1,16 +1,13 @@
-import React, {Component} from 'react';
+import React, {Component, useState } from 'react';
 import get from 'lodash';
-import {Form, Button, Alert, Row, Col} from "react-bootstrap";
+import {Container, Form, Button, Alert, Row, Col} from "react-bootstrap";
 import axios from 'axios'
 import {validateEmail} from "../../../utils/general";
 import {bake_cookie, read_cookie, delete_cookie} from "../../../utils/cookies"
 import {UserContext} from '../../../contexts/userContext';
-// import TimePickerPage from "./time-picker"
-// import BasicDateTimePicker from './time-picker'
-// import TimePicker from 'react-gradient-timepicker';
-// import {Timepicker} from 'react-timepicker';
-// import 'react-timepicker/timepicker.css';
 
+import MaterialUITime from './time-picker'
+import MaterialUIDate from './date-picker'
 
 const config = {
     headers: {
@@ -20,49 +17,50 @@ const config = {
 
 
 
-
 export default class CreateAppointmentForm extends Component {
+    
     constructor(props) {
+        
         super(props);
-
         this.state = {
             error: false,
+            timeStart: new Date(),
+            timeEnd: new Date(),
+           
+        
         }
+        // const [startDate, setStartDate] = useState(new Date());
+        
         
 
-        // this.onErrorClose = this.onErrorClose.bind(this);
-        this.register = this.register.bind(this);
+        this.onErrorClose = this.onErrorClose.bind(this);
+        this.create = this.create.bind(this);
 
-        this.timeStart = React.createRef();
-        this.timeEnd = React.createRef();
-        this.description = React.createRef();
-        this.translatorUserId = React.createRef();
-        this.applicantUserId = React.createRef();
-        this.status = React.createRef();
-        this.location = React.createRef();
+        this.locationRef = React.createRef();
+
+
         
     }
-    onChange (hours, minutes) {
-        console.log("Hours:", hours)
-    }
-    
 
-    register = (e) => {
+    updateTime = (time) => {
+        this.setState({
+            timeStart: time,
+        })
+        console.log("TIME:", time)
+    }
+
+    create = (e) => {
         e.preventDefault();
-        let timeStart = this.timeStartRef.current.value; 
-        let timeEnd = this.timeEndRef.current.value; 
-        let description = this.descriptionRef.current.value; 
-        let translatorUserId = this.translatorUserIdRef.current.value; 
-        let applicantUserId = this.applicantUserIdRef.current.value; 
-        let status = this.statusRef.current.value; 
+        let timeS = this.state.timeStart; 
+        let timeE = new Date(this.state.timeStart.setHours(this.state.timeStart.getHours() + 1));
+        let translatorUserId = this.context.user.user_id;
+        let status = "open"; 
         let location = this.locationRef.current.value; 
         
         let data = {
-            timeStart: timeStart,
-            timeEnd: timeEnd,
-            description: description, 
+            timeStart: timeS.toISOString().slice(0, 19).replace('T', ' '),
+            timeEnd: timeE.toISOString().slice(0, 19).replace('T', ' '),
             translatorUserId: translatorUserId, 
-            applicantUserId: applicantUserId, 
             status: status,
             location: location,
         }
@@ -98,74 +96,47 @@ export default class CreateAppointmentForm extends Component {
         console.log("data",data);
         return;
     }
+    onErrorClose() {
+        this.setState({
+            error: false
+        })
+    }
+
+
+
+    
 
     render() {
-
+        // const [value, onChange] = useState(new Date());
+        // let value = state.value
+        // let onChange = state.onChange
         return (
-            <Form onSubmit={this.register}>
-                {this.state.error ? 
-                    <Alert dismissible variant="danger" onClose={this.onErrorClose}>{this.state.error}</Alert>
-                :""}
-                {/* <Form.Group sm = {6}>
-                    <Form.Label>45 Minute Appointment Start</Form.Label>
-                    <TimePickerPage />
-                // </Form.Group> */}
-
+            <Container className = "body">
                 
-
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" ref ={this.passwordRef}/>
-                    <Form.Label>Confirm password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" ref ={this.confPasswordRef}/>
-                </Form.Group>
-                <Row>
-                    <Col>
-                    <Form.Control placeholder="First name" ref={this.fNameRef}/>
+                <Form onSubmit={this.create}>
+                    {/* onSubmit={this.update} */}
+                    {this.state.error ? 
+                        <Alert dismissible variant="danger" onClose={this.onErrorClose}>{this.state.error}</Alert>
+                    :""}
+                    <Col sm={5}>
+                        <Row>
+                            <MaterialUIDate curr={this.state.timeStart} updateTime={this.updateTime}/>
+                            <Form.Group>
+                                <Form.Label>Location or Link:</Form.Label>
+                                <Form.Control ref={this.locationRef}/>
+                            </Form.Group>
+                        </Row>
                     </Col>
-                    <Col>
-                    <Form.Control placeholder="Last name" ref={this.lNameRef}/>
+
+                    <Col sm={5} >
+                        <Row>
+                            <MaterialUITime curr={this.state.timeStart} updateTime={this.updateTime}/>
+  
+                        </Row>
                     </Col>
-                </Row>
-                <Form.Group>
-                    <Form.Label>Date of Birth (MM/DD/YY):</Form.Label>
-                    <Form.Control ref={this.dobRef}/>
-                </Form.Group>
-
-                <Form.Group>
-                    <Form.Label>Langauges spoken</Form.Label>
-                    <Form.Control ref={this.languageRef}/>
-                    <Form.Text id="langaugeHelpBlock" muted>
-                        Please enter the langauges you speak as a comma seperated list (IE spanish, german, italian ...)
-                    </Form.Text>
-                </Form.Group>
-
-
-
-                <Form.Group>
-                    <Form.Label>Port of entry:</Form.Label>
-                    <Form.Control ref={this.portRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Nationality:</Form.Label>
-                    <Form.Control ref={this.nationalityRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Number of Dependants:</Form.Label>
-                    <Form.Control ref={this.depRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Are you a translator or an applicant?</Form.Label>
-                    <Form.Control size="sm" as="select" ref={this.typeRef}>
-                        <option value="user">User</option>
-                        <option value="translator">Translator</option>
-                    </Form.Control>
-                </Form.Group>
-                
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
+                    <Button variant="primary" type="submit">Create</Button>
+                </Form>
+            </Container>
         );
     }
 }

@@ -26,7 +26,7 @@ const Appointment = function(appointment) {
 };
 
 Appointment.create = (appointment, result) => {
-    sql.query("INSERT INTO appointments SET time_start = ?, time_end = ?, description =?, translator_user_id = ?, applicant_user_id=?, status=?, location=?", [appointment.timeStart, appointment.timeEnd, appointment.description, appointment.translatorUserId, appointment.applicantUserId ? appointment.applicantUserId : -1, appointment.status, appointment.location], (err, res) => {
+    sql.query("INSERT INTO appointments SET time_start = (STR_TO_DATE(?,'%Y-%m-%d %H:%i:%s')), time_end = (STR_TO_DATE(?,'%Y-%m-%d %H:%i:%s')), description =?, translator_user_id = ?, applicant_user_id=?, status=?, location=?", [appointment.timeStart, appointment.timeEnd, appointment.description, appointment.translatorUserId, appointment.applicantUserId ? appointment.applicantUserId : -1, appointment.status, appointment.location], (err, res) => {
       if (err) {
         console.log("error in appointment model: ", err);
         result(err, null);

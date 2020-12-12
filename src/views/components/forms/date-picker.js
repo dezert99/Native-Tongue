@@ -10,7 +10,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-export default function MaterialUITime(props) {
+export default function MaterialUIDate(props) {
   // The first commit of Material-UI
   const [selectedDate, setSelectedDate] = React.useState(props.curr);
 //   const updateTime = props.updateTime();
@@ -22,14 +22,17 @@ export default function MaterialUITime(props) {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardTimePicker
+
+        <KeyboardDatePicker
         margin="normal"
-        id="time-picker"
-        label="Time"
+        id="date-picker-dialog"
+        label="Date"
+        format="MM/dd/yyyy"
         value={selectedDate}
         onChange={handleDateChange}
+
         KeyboardButtonProps={{
-            'aria-label': 'change time',
+            'aria-label': 'change date',
         }}
         />
         {/* {props.updateTime(selectedDate)} */}
