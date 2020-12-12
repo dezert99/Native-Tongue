@@ -73,60 +73,63 @@ class ChatScreen extends React.Component {
        const maxScrollTop = scrollHeight - height;
        this.scrollDiv.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
      };
-     componentDidMount = async () => {
-        const { location } = this.props;
-        console.log("LOCATION:", this.context.user.email)
+     initialize = async () => {
+      const { location } = this.props;
+      console.log("LOCATION:", this.context.user.email)
 
-        const email = this.props.email || this.context.user.email
-        const room = this.props.room || this.context.user.user_id
-        
-        let token = "";
+      const email = this.props.email
+      const room = this.props.room
 
-      
-        this.setState({ loading: true });
+      let token = "";
+
+    
+      this.setState({ loading: true });
+    
+      try {
+        token = await this.getToken(email);
+      } catch {
+        throw new Error("Unable to get token, please reload this page");
+      }
+      const client = await Chat.Client.create(token);
+
+      client.on("tokenAboutToExpire", async () => {
+        const token = await this.getToken(email);
+        client.updateToken(token);
+      });
+    
+      client.on("tokenExpired", async () => {
+        const token = await this.getToken(email);
+        client.updateToken(token);
+      });
+      client.on("channelJoined", async (channel) => {
+          // getting list of all messages since this is an existing channel
+          const messages = await channel.getMessages();
+          this.setState({ messages: messages.items || [] });
+          this.scrollToBottom();
+        });
       
         try {
-          token = await this.getToken(email);
-        } catch {
-          throw new Error("Unable to get token, please reload this page");
-        }
-        const client = await Chat.Client.create(token);
-
-        client.on("tokenAboutToExpire", async () => {
-          const token = await this.getToken(email);
-          client.updateToken(token);
-        });
-      
-        client.on("tokenExpired", async () => {
-          const token = await this.getToken(email);
-          client.updateToken(token);
-        });
-        client.on("channelJoined", async (channel) => {
-            // getting list of all messages since this is an existing channel
-            const messages = await channel.getMessages();
-            this.setState({ messages: messages.items || [] });
-            this.scrollToBottom();
-          });
-        
+          console.log("ROOM 2:", room)
+          const channel = await client.getChannelByUniqueName(room.toString());
+          console.log("in the join channel", channel)
+          this.joinChannel(channel);
+        } catch(err) {
           try {
-            console.log("ROOM 2:", room)
-            const channel = await client.getChannelByUniqueName(room.toString());
-            console.log("in the join channel", channel)
+            console.log("in the catch, error:", err)
+            const channel = await client.createChannel({
+              uniqueName: room,
+              friendlyName: room,
+            });
+        
             this.joinChannel(channel);
-          } catch(err) {
-            try {
-              console.log("in the catch, error:", err)
-              const channel = await client.createChannel({
-                uniqueName: room,
-                friendlyName: room,
-              });
-          
-              this.joinChannel(channel);
-            } catch {
-              throw new Error("Unable to create channel, please reload this page");
-            }
+          } catch {
+            throw new Error("Unable to create channel, please reload this page");
           }
-      }
+        }
+     }
+     componentDidMount = async () => {
+        this.initialize();
+    }
       getToken = async (email) => {
         const response = await axios.get(`/token/${email}`);
         const { data } = response;
@@ -141,13 +144,23 @@ class ChatScreen extends React.Component {
         }
       };
 
+      componentDidUpdate(prevProps, prevState) {
+        console.log("props",prevProps, prevState, this.props);
+        if(prevProps !== this.props && !this.state.loading){
+          this.setState({
+            messages: []
+          },this.initialize);
+          
+        }
+      }
+
       render() {
         const { loading, text, messages, channel } = this.state;
         const { location } = this.props;
         const { state } = location || {};
         console.log("CONTEXT:",this.context.user.email)
-        const email = this.props.email || this.context.user.email
-        const room = this.props.user_id || this.context.user.user_id
+        const email = this.props.email
+        const room = this.props.room
         console.log(this.state)
 
         return (

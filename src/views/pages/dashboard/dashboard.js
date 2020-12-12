@@ -80,7 +80,9 @@ export default class Dashboard extends Component {
                         <div style={{width: "100%", marginTop: "10px"}}>
                             {!isEmpty(this.state.currentAppointment) ?
                             <AppointmentDetail appointment = {this.state.currentAppointment} retrieveAppointments={this.retrieveAppointments}>
-                                <div className = "chat__container"><ChatScreen email={this.context.user.first_name} room={this.state.currentAppointment.appointment_id}/></div>
+                                <div className = "chat__container">
+                                    <ChatScreen email={this.context.user.first_name} room={`room-${this.state.currentAppointment.appointment_id}`}/>
+                                </div>
                             </AppointmentDetail>
                             : <Card><Card.Body>Please select an appointment to view its details.</Card.Body></Card>}
                         </div>
