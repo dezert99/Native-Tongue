@@ -208,12 +208,13 @@ class ChatScreen extends React.Component {
       }
   }
   ChatScreen.contextType = UserContext;
+
   const styles = {
     textField: { width: "100%", borderWidth: 0, borderColor: "transparent" },
     // textFieldContainer: { flex: 1, marginRight: 12 },
     textFieldContainer: { flex: 1},
     // gridItem: { paddingTop: 12, paddingBottom: 12 },
-    gridItemChatList: { overflow: "auto", height: "70vh" },
+    gridItemChatList: { overflow: "scroll", height: "70vh" },
     gridItemMessage: { marginTop: 12, marginBottom: 12 },
     sendButton: { backgroundColor: "#3f51b5" },
     sendIcon: { color: "white" },
