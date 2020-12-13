@@ -22,6 +22,7 @@ export default class RegisterForm extends Component {
 
         this.state = {
             error: false,
+            showExtra: false
         }
 
         this.onErrorClose = this.onErrorClose.bind(this);
@@ -38,6 +39,7 @@ export default class RegisterForm extends Component {
         this.depRef = React.createRef();
         this.nationalityRef = React.createRef();
         this.typeRef = React.createRef();
+        this.showExtra = false;
         
     }
     
@@ -93,10 +95,10 @@ export default class RegisterForm extends Component {
         let fName = this.fNameRef.current.value; 
         let lName = this.lNameRef.current.value; 
         let langauge = this.languageRef.current.value; 
-        let port = this.portRef.current.value; 
-        let dependants = this.depRef.current.value; 
-        let nationality  = this.nationalityRef.current.value; 
-        let type = this.typeRef.current.value;
+        let port = get(this.portRef,"current.value",""); 
+        let dependants = get(this.depRef,"current.value","");
+        let nationality  = get(this.nationalityRef,"current.value","");
+        let type = get(this.typeRef,"current.value","");
         console.log("TYPE:", type)
         const hashedPassword = require("crypto")
         .createHash("sha256")
@@ -164,6 +166,20 @@ export default class RegisterForm extends Component {
         return;
     }
 
+    updateType = (event) => {
+        console.log(event);
+        if(event.target.value === "user"){
+            this.setState({
+                showExtra: true
+            })
+        }
+        else {
+            this.setState({
+                showExtra: false
+            })
+        }
+    }
+
     render() {
 
         return (
@@ -202,28 +218,35 @@ export default class RegisterForm extends Component {
                         Please enter the langauges you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>
-
-
-
-                <Form.Group>
-                    <Form.Label>Port of entry:</Form.Label>
-                    <Form.Control ref={this.portRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Nationality:</Form.Label>
-                    <Form.Control ref={this.nationalityRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Number of Dependants:</Form.Label>
-                    <Form.Control ref={this.depRef}/>
-                </Form.Group>
                 <Form.Group>
                     <Form.Label>Are you a translator or an applicant?</Form.Label>
-                    <Form.Control size="sm" as="select" ref={this.typeRef}>
-                        <option value="user">User</option>
+                    <Form.Control size="sm" as="select" onChange={this.updateType} ref={this.typeRef}>
                         <option value="translator">Translator</option>
+                        <option value="user">User</option>
                     </Form.Control>
                 </Form.Group>
+                {
+                    this.state.showExtra ? (
+                        <React.Fragment>
+                            <Form.Group>
+                                <Form.Label>Port of entry:</Form.Label>
+                                <Form.Control ref={this.portRef}/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Nationality:</Form.Label>
+                                <Form.Control ref={this.nationalityRef}/>
+                            </Form.Group>
+                            <Form.Group>
+                                <Form.Label>Number of Dependants:</Form.Label>
+                                <Form.Control ref={this.depRef}/>
+                            </Form.Group>
+                        </React.Fragment>
+                     ):(
+                         ""
+                    )
+                }
+                
+                
                 
                 <Button variant="primary" type="submit">
                     Submit

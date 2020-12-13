@@ -106,20 +106,18 @@ export default class App extends React.Component {
                   <NavDropdown.Item href="#action/3.4">Department of Homeland Security</NavDropdown.Item>
                 </NavDropdown>
 
-                  {!isEmpty(this.state.user) && this.state.user.type === "translator" ?<Col sm={10}>
+                  {!isEmpty(this.state.user) && this.state.user.type === "translator" ?
                     <LinkContainer to="/create-appointment">
                       <Nav.Link>Create Appointment Slot</Nav.Link>
                     </LinkContainer>
-                  </Col>: "" }
-
-                  {!isEmpty(this.state.user)?<Col sm={4} xs={12}>
-                Hello {this.state.user.first_name}
-                <span class = "logout" onClick = {this.logout}> Logout</span>
-                </Col> : <Link to="/login">Login</Link>}
+                 : "" }
               </Nav>
             </Navbar.Collapse> 
             
-            
+            {!isEmpty(this.state.user)?<span>
+                  Hello {this.state.user.first_name}
+                <span class = "logout" onClick = {this.logout}> Logout</span>
+                </span> : <Link to="/login">Login</Link>}
           </Navbar>
   
           <Container className = "body">
