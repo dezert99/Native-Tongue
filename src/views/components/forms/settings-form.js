@@ -37,10 +37,11 @@ export default class SettingsForm extends Component {
         this.portRef = React.createRef();
         this.depRef = React.createRef();
         this.nationalityRef = React.createRef();
+        this.notifications = React.createRef();
         
     }
 
-    register = (e) => {
+    update = (e) => {
         e.preventDefault();
         let username = this.usernameRef.current.value; 
         let password = this.passwordRef.current.value; 
@@ -52,6 +53,7 @@ export default class SettingsForm extends Component {
         let port = this.portRef.current.value; 
         let dependants = this.depRef.current.value; 
         let nationality  = this.nationalityRef.current.value; 
+        let notifications = this.notificationsRef.current.value;
 
         const hashedPassword = require("crypto")
         .createHash("sha256")
@@ -118,50 +120,53 @@ export default class SettingsForm extends Component {
         return;
     }
 
-    update() {}
+    
 
     render() {
 
         return (
-            <Form >
-                {/* onSubmit={this.update} */}
+            <Form onSubmit={this.update}>
+                
                 {this.state.error ? 
                     <Alert dismissible variant="danger" onClose={this.onErrorClose}>{this.state.error}</Alert>
                 :""}
                 <Row>
                     <Col>
-                    <Form.Control placeholder={this.context.user.first_name} ref={this.fNameRef}/>
+                    <Form.Control placeholder={this.context.user.first_name} ref={this.fNameRef} defaultValue={this.context.first_name}/>
                     </Col>
                     <Col>
-                    <Form.Control placeholder={this.context.user.last_name} ref={this.lNameRef}/>
+                    <Form.Control placeholder={this.context.user.last_name} ref={this.lNameRef} defaultValue={this.context.last_name}/>
                     </Col>
                 </Row>
                 <Form.Group>
                     <Form.Label >Date of Birth (MM/DD/YY):</Form.Label>
-                    <Form.Control placeholder={this.context.user.date_of_birth} ref={this.dobRef}/>
+                    <Form.Control placeholder={this.context.user.date_of_birth} ref={this.dobRef} defaultValue={this.context.date_of_birth}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Langauges spoken</Form.Label>
-                    <Form.Control placeholder={this.context.user.languages} ref={this.languageRef}/>
+                    <Form.Control placeholder={this.context.user.languages} ref={this.languageRef} defaultValue={this.context.languages}/>
                     <Form.Text id="langaugeHelpBlock" muted>
                         Please re-enter all the languages you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>
-
-                <Form.Group>
-                    <Form.Label>Port of entry:</Form.Label>
-                    <Form.Control placeholder={this.context.user.port_of_entry} ref={this.portRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Nationality:</Form.Label>
-                    <Form.Control placeholder={this.context.user.nationality} ref={this.nationalityRef}/>
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Number of Dependants:</Form.Label>
-                    <Form.Control placeholder={this.context.num_of_dependants} ref={this.depRef}/>
-                </Form.Group>
-                
+                {this.context.user.type !== "translator" ? 
+                    <div>
+                        <Form.Group>
+                            <Form.Label>Port of entry:</Form.Label>
+                            <Form.Control placeholder={this.context.user.port_of_entry} ref={this.portRef} defaultValue={this.context.port_of_entry}/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Nationality:</Form.Label>
+                            <Form.Control placeholder={this.context.user.nationality} ref={this.nationalityRef} defaultValue={this.context.nationality}/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Number of Dependants:</Form.Label>
+                            <Form.Control placeholder={this.context.num_of_dependants} ref={this.depRef} defaultValue={this.context.num_of_dependants}/>
+                        </Form.Group>
+                    </div>
+                    : ""
+                }
                 <Button variant="primary" type="submit">
                     Submit Edits
                 </Button>
@@ -170,3 +175,4 @@ export default class SettingsForm extends Component {
     }
 }
 SettingsForm.contextType = UserContext;
+

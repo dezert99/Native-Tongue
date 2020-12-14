@@ -28,6 +28,7 @@ exports.create = (req, res) => {
     dependants: req.body.dependants,
     nationality: req.body.nationality, 
     type: req.body.type,
+    notifications: req.body.notifications,
   });
 
   // Save User in the database
@@ -120,6 +121,7 @@ exports.update = (req, res) => {
       }
     );
   };
+  
 // Delete an User with the specified UserId in the request
 exports.delete = (req, res) => {
     User.remove(req.params.username, (err, data) => {

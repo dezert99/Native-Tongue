@@ -7,6 +7,7 @@ import About from "../about/about"
 import LoginPage from "../login/login-page";
 import SettingsPage from "../settings/settings-page";
 import {Container, Col, Row} from "react-bootstrap";
+import Image from 'react-bootstrap/Image'
 import {isEmpty} from 'lodash';
 
 export default class HomePage extends Component {
@@ -19,7 +20,7 @@ export default class HomePage extends Component {
             user: {},
         }
     }
-
+    
 
     render() {
         
@@ -36,11 +37,21 @@ export default class HomePage extends Component {
                   
                   
                     <Col sm={5} xs={12}>
-                        <div style={{width: "100%"}}>
-                            {this.showLogin? <LoginPage/> :
-                                <SettingsPage/>
-                            }
-                        </div>
+                    
+                    <div style={{width: "100%"}} padding-top="1000px">
+                        {this.showLogin? <LoginPage/> 
+                        :
+                        <Col>
+                            <Row>
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/USCIS_logo_English.svg" ></img>
+                            </Row>
+                            <Row top-padding="50px">
+                                <img src="https://rampages.us/izdivine/wp-content/uploads/sites/8175/2015/10/15.jpg" width="400" height="600" opacity="5.0"></img>
+                            </Row>
+                        </Col>
+                        }
+                    </div>
+                        
                     </Col>
                 </Row>
               </Container>
@@ -48,4 +59,5 @@ export default class HomePage extends Component {
     }
 }
 HomePage.contextType = UserContext;
+
 

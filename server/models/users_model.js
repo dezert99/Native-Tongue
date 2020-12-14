@@ -11,6 +11,7 @@ const Users = function(Users) {
     this.dependants = Users.dependants;
     this.nationality = Users.nationality; 
     this.type = Users.type;
+    this.notifications = Users.notifications;
 };
 
 var date = new Date();
@@ -29,6 +30,20 @@ Users.create = (newUser, result) => {
       console.log("created User: ", { id: res.insertId, ...newUser });
       result(null, { id: res.insertId, ...newUser });
     });
+};
+
+Users.update = (newUser, result) => {
+  sql.query("UPDATE users SET first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?, type=?, notifications=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate, newUser.type, newUser.notifications], (err, res) => {
+    if (err) {
+      console.log("error in users model: ", err);
+      result(err, null);
+      return;
+    }
+
+    // console.log("THE UsersS RES OBJECT: ", res);
+    console.log("updated User: ", { id: res.insertId, ...newUser });
+    result(null, { id: res.insertId, ...newUser });
+  });
 };
 
 

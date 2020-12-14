@@ -25,7 +25,7 @@ export default function MaterialUITime(props) {
         <KeyboardTimePicker
         margin="normal"
         id="time-picker"
-        label="Time"
+        label= {props.label}
         value={selectedDate}
         onChange={handleDateChange}
         KeyboardButtonProps={{

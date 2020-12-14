@@ -39,6 +39,7 @@ export default class RegisterForm extends Component {
         this.depRef = React.createRef();
         this.nationalityRef = React.createRef();
         this.typeRef = React.createRef();
+        this.notificationsRef = React.createRef();
         this.showExtra = false;
         
     }
@@ -99,6 +100,7 @@ export default class RegisterForm extends Component {
         let dependants = get(this.depRef,"current.value","");
         let nationality  = get(this.nationalityRef,"current.value","");
         let type = get(this.typeRef,"current.value","");
+        // let notifications = get(this.notificationsRef,"current.value","");
         console.log("TYPE:", type)
         const hashedPassword = require("crypto")
         .createHash("sha256")
@@ -132,6 +134,7 @@ export default class RegisterForm extends Component {
             dependants: dependants,
             nationality: nationality, 
             type: type,
+            // notifications: notifications,
         }
 
         axios.post("/user", data, config)
@@ -147,7 +150,7 @@ export default class RegisterForm extends Component {
             window.location.href = "/login";
         })
         .catch((err) => {
-            console.log(err.response.data);
+            // console.log(err.response.data);
             if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
                 this.setState({
                     error: "This email is already taken, please choose another or login."
@@ -218,6 +221,13 @@ export default class RegisterForm extends Component {
                         Please enter the langauges you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>
+                {/* <Form.Group>
+                    <Form.Label>Do you want to receive email notifications?</Form.Label>
+                    <Form.Control size="sm" as="select" ref={this.notifications}>
+                        <option value="on">Yes, please email me.</option>
+                        <option value="off">No thank you.</option>
+                    </Form.Control>
+                </Form.Group> */}
                 <Form.Group>
                     <Form.Label>Are you a translator or an applicant?</Form.Label>
                     <Form.Control size="sm" as="select" onChange={this.updateType} ref={this.typeRef}>

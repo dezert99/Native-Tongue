@@ -94,23 +94,29 @@ export default class App extends React.Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="mr-auto">
+              {!isEmpty(this.state.user)?
                 <LinkContainer to="/dashboard">
                   <Nav.Link>Dashboard</Nav.Link>
-                </LinkContainer>
+                </LinkContainer>: ""}
                 <LinkContainer to="/faq">
                   <Nav.Link>FAQ</Nav.Link>
                 </LinkContainer>
-                <NavDropdown title="Relevant Agencies" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.3">US Citizens and Immigration Service</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">Department of Homeland Security</NavDropdown.Item>
-                </NavDropdown>
-
+                
+                {!isEmpty(this.state.user)?
+                <LinkContainer to="/settings">
+                  <Nav.Link>Settings</Nav.Link>
+                </LinkContainer>: ""}
                   {!isEmpty(this.state.user) && this.state.user.type === "translator" ?
                     <LinkContainer to="/create-appointment">
                       <Nav.Link>Create Appointment Slot</Nav.Link>
                     </LinkContainer>
                  : "" }
+                 <NavDropdown title="Relevant Agencies" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="https://www.uscis.gov/">US Citizens and Immigration Service</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="https://www.dhs.gov/">Department of Homeland Security</NavDropdown.Item>
+                </NavDropdown>
+                 
               </Nav>
             </Navbar.Collapse> 
             
