@@ -14,6 +14,7 @@ const Users = function(Users) {
     this.notifications = Users.notifications;
 };
 
+
 var date = new Date();
 const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
 
@@ -33,17 +34,20 @@ Users.create = (newUser, result) => {
 };
 
 Users.update = (newUser, result) => {
-  console.log("XXXXXXXXXXXXXXXXXXXXXX", newUser.username)
+
   sql.query("UPDATE users SET first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, notifications=?, languages=? WHERE email=?", [newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, newUser.notifications, newUser.langauge, newUser.username], (err, res) => {
     if (err) {
       console.log("error in update users model: ", err);
       result(err, null);
       return;
     }
+    const data {
+      
+    }
 
     // console.log("THE UsersS RES OBJECT: ", res);
-    console.log("updated User: ", { id: res.insertId, ...newUser });
-    result(null, { id: res.insertId, ...newUser });
+    console.log("updated User: ", { ...newUser });
+    result(null, {  ...newUser  });
   });
 };
 

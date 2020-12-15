@@ -15,7 +15,7 @@ export default class SettingsPage extends Component {
     render() {
 
         return (
-            <div>
+            <div style={{marginTop: "150px"}}>
                 <SettingsForm />
             </div>
         );

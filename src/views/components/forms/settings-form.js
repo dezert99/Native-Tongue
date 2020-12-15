@@ -55,6 +55,7 @@ export default class SettingsForm extends Component {
 
         let data = {
 
+            username: this.context.user.email,
             dob: dob, 
             fName: fName, 
             lName: lName, 
@@ -63,19 +64,28 @@ export default class SettingsForm extends Component {
             dependants: dependants,
             nationality: nationality, 
             notifications: notifications,
-            username: this.context.user.email,
+            type: this.context.user.type,
         }
 
+        
         axios.put("/user", data, config)
         .then((response) => {
             console.log(response);
+
             const data = response.data;
+            
+            console.log("______________", data)
+            delete_cookie("user")
+            bake_cookie("user", data)
             if(data.error){
                 this.setState({
                     error: data.message
                 })
                 return;
             }
+            // console.log("________________", this.context.updateUser)
+            // this.context.updateUser(data)
+            
             window.location.href = "/dashboard";
             
         })
@@ -96,6 +106,7 @@ export default class SettingsForm extends Component {
             
         });
         console.log("data",data);
+        
         return;
     }
 
