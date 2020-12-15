@@ -96,10 +96,14 @@ export default class RegisterForm extends Component {
         let fName = this.fNameRef.current.value; 
         let lName = this.lNameRef.current.value; 
         let langauge = this.languageRef.current.value; 
+
+
         let port = get(this.portRef,"current.value",""); 
         let dependants = get(this.depRef,"current.value","");
         let nationality  = get(this.nationalityRef,"current.value","");
         let type = get(this.typeRef,"current.value","");
+
+        
         // let notifications = get(this.notificationsRef,"current.value","");
         console.log("TYPE:", type)
         const hashedPassword = require("crypto")
