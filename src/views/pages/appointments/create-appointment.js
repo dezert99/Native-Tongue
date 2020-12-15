@@ -56,7 +56,7 @@ export default class CreateAppointment extends Component {
     render() {
 
         return (
-            <Container className = "body">
+            <Container className = "body" style={{marginTop: "50px"}}>
                 <Row>
                     <Col sm={4} xs={12}>
                         <div style={{width: "100%"}}>

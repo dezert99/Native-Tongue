@@ -88,7 +88,7 @@ export default class App extends React.Component {
           <Navbar bg="light" expand="lg">
             <LinkContainer to="/home">
               <Nav.Link>
-                <Navbar.Brand >Native Tounge</Navbar.Brand> 
+                <Navbar.Brand >Native Tongue</Navbar.Brand> 
               </Nav.Link>
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
