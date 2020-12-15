@@ -96,15 +96,10 @@ export default class RegisterForm extends Component {
         let fName = this.fNameRef.current.value; 
         let lName = this.lNameRef.current.value; 
         let langauge = this.languageRef.current.value; 
-
-
-        let port = get(this.portRef,"current.value",""); 
-        let dependants = get(this.depRef,"current.value","");
-        let nationality  = get(this.nationalityRef,"current.value","");
-        let type = get(this.typeRef,"current.value","");
-
-        
-        // let notifications = get(this.notificationsRef,"current.value","");
+        let port = this.portRef.current.value; 
+        let dependants = this.depRef.current.value;
+        let nationality  = this.nationalityRef.current.value;
+        let type = this.typeRef.current.value;
         console.log("TYPE:", type)
         const hashedPassword = require("crypto")
         .createHash("sha256")
@@ -140,7 +135,7 @@ export default class RegisterForm extends Component {
             type: type,
             // notifications: notifications,
         }
-
+        console.log("Dataaaa",data);
         axios.post("/user", data, config)
         .then((response) => {
             console.log(response);
@@ -154,12 +149,14 @@ export default class RegisterForm extends Component {
             window.location.href = "/login";
         })
         .catch((err) => {
-            // console.log(err.response.data);
-            if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
-                this.setState({
-                    error: "This email is already taken, please choose another or login."
-                })
-                window.scrollTo(0, 0);
+            console.log(err);
+            if(err.response){
+                if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
+                    this.setState({
+                        error: "This email is already taken, please choose another or login."
+                    })
+                    window.scrollTo(0, 0);
+                }
             }
             else {
                 this.setState({
@@ -167,6 +164,7 @@ export default class RegisterForm extends Component {
                 })
                 window.scrollTo(0, 0);
             }
+           
             
         });
         console.log("data",data);
@@ -239,26 +237,21 @@ export default class RegisterForm extends Component {
                         <option value="user">User</option>
                     </Form.Control>
                 </Form.Group>
-                {
-                    this.state.showExtra ? (
-                        <React.Fragment>
-                            <Form.Group>
-                                <Form.Label>Port of entry:</Form.Label>
-                                <Form.Control ref={this.portRef}/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Nationality:</Form.Label>
-                                <Form.Control ref={this.nationalityRef}/>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Number of Dependants:</Form.Label>
-                                <Form.Control ref={this.depRef}/>
-                            </Form.Group>
-                        </React.Fragment>
-                     ):(
-                         ""
-                    )
-                }
+
+                <div className = {this.state.showExtra ? '' : 'hidden'} >
+                    <Form.Group>
+                        <Form.Label>Port of entry:</Form.Label>
+                        <Form.Control ref={this.portRef}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Nationality:</Form.Label>
+                        <Form.Control ref={this.nationalityRef}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Number of Dependants:</Form.Label>
+                        <Form.Control defaultValue={0} ref={this.depRef}/>
+                    </Form.Group>
+                </div>
                 
                 
                 

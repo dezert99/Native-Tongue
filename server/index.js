@@ -12,7 +12,6 @@ app.use(router);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use(pino);
-console.log("in app server", process.env);
 syncServiceDetails();
 // if(process.env.NODE_ENV !== "development"){
 //   app.use(express.static(path.join(__dirname,'/../build/index.html')));

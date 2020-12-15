@@ -24,10 +24,10 @@ exports.create = (req, res) => {
     fName: req.body.fName, 
     lName: req.body.lName, 
     langauge: req.body.langauge,
-    port: req.body.port,
-    dependants: req.body.dependants,
-    nationality: req.body.nationality, 
-    type: req.body.type,
+    port: req.body.port || " ",
+    dependants: req.body.dependants || 0,
+    nationality: req.body.nationality || " ", 
+    type: req.body.type || " ",
     notifications: req.body.notifications,
   });
 
