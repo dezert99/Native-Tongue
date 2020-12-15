@@ -6,7 +6,7 @@ const Users = function(Users) {
     this.dob = Users.dob; 
     this.fName = Users.fName; 
     this.lName = Users.lName; 
-    this.langauge = Users.langauge;
+    this.language = Users.langauge;
     this.port = Users.port;
     this.dependants = Users.dependants;
     this.nationality = Users.nationality; 
@@ -18,8 +18,14 @@ var date = new Date();
 const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
 
 Users.create = (newUser, result) => {
-    console.log("TYPE IN SQL:", newUser.type)
-    sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?, type=?, languages=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate, newUser.type, newUser.langauge], (err, res) => {
+    console.log("TYPE IN SQL:", newUser)
+
+    let language = newUser['language'];
+    console.log("language ", language, newUser);
+    let langArray = language.replace(" ", "").split(",");
+
+    
+    sql.query("INSERT INTO users SET email = ?, password = ?, first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, date_joined=?, type=?, languages=?", [newUser.username, newUser.password, newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, currDate, newUser.type, newUser.language], (err, res) => {
       if (err) {
         console.log("error in create users model: ", err);
         result(err, null);
@@ -28,6 +34,19 @@ Users.create = (newUser, result) => {
   
       // console.log("THE UsersS RES OBJECT: ", res);
       console.log("created User: ", { id: res.insertId, ...newUser });
+      langArray.forEach((lang) => {
+        sql.query("INSERT INTO language SET user_id = ?, language = ?", [res.insertId, lang.replace(" ","")], (err, res) => {
+          if (err) {
+            console.log("error in insert langauge users model: ", err);
+            // result(err, null);
+            return;
+          }
+      
+          // console.log("THE UsersS RES OBJECT: ", res);
+          // console.log("created User: ", { id: res.insertId, ...newUser });
+          // result(null, { id: res.insertId, ...newUser });
+        });
+      })
       result(null, { id: res.insertId, ...newUser });
     });
 };

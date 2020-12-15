@@ -62,6 +62,7 @@ Appointment.getAll = result => {
 Appointment.getApplicantAppointments = async (applicantID,result) => {
   let userInfo = await grabSQLData("SELECT * FROM users WHERE user_id=?",[applicantID]) ;
   let languages = userInfo[0]["languages"].replace(" ","").split(",");
+ console.log("languages ", languages);
   let translatorIds = []
   for(let i = 0; i < languages.length; i++) {
     let resp = await grabSQLData("SELECT * FROM language WHERE language=?",[languages[i]]);
@@ -71,6 +72,8 @@ Appointment.getApplicantAppointments = async (applicantID,result) => {
   let open = [];
   let appointments = []
   let all = {};
+ console.log("translatorIds ", translatorIds);
+
   for(let i = 0; i < translatorIds.length; i++){
     appointments = await grabSQLData("SELECT * FROM appointments WHERE translator_user_id=? AND (status!='reserved' OR applicant_user_id=?)", [translatorIds[i].user_id,applicantID])
     .catch(err => {
