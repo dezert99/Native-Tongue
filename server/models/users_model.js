@@ -54,7 +54,7 @@ Users.create = (newUser,  result) => {
 
 Users.update = (newUser,uid, result) => {
 
-  sql.query("UPDATE users SET first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, notifications=?, languages=? WHERE email=?", [newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, newUser.notifications, newUser.langauge, newUser.username], (err, res) => {
+  sql.query("UPDATE users SET first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, notifications=?, languages=? WHERE email=?", [newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, newUser.notifications, newUser.language, newUser.username], (err, res) => {
     if (err) {
       console.log("error in update users model: ", err);
       result(err, null);
