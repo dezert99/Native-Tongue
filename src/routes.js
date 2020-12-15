@@ -11,6 +11,7 @@ import RegisterPage from "./views/pages/register/register-page";
 import Dashboard from "./views/pages/dashboard/dashboard";
 import FrequentQuestions from './views/pages/about/faq';
 import CreateAppointment from './views/pages/appointments/create-appointment.js';
+import SettingsPage from './views/pages/settings/settings-page';
 
 export default class Routes extends Component {
   
@@ -44,6 +45,9 @@ export default class Routes extends Component {
 
             <Route path="/dashboard">
               <Dashboard/>
+            </Route>
+            <Route path="/settings">
+              <SettingsPage />
             </Route>
 
             <Route path="/" >

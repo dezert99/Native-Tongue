@@ -22,7 +22,6 @@ export default class RegisterForm extends Component {
 
         this.state = {
             error: false,
-            showExtra: false
         }
 
         this.onErrorClose = this.onErrorClose.bind(this);
@@ -39,8 +38,6 @@ export default class RegisterForm extends Component {
         this.depRef = React.createRef();
         this.nationalityRef = React.createRef();
         this.typeRef = React.createRef();
-        this.notificationsRef = React.createRef();
-        this.showExtra = false;
         
     }
     
@@ -97,8 +94,8 @@ export default class RegisterForm extends Component {
         let lName = this.lNameRef.current.value; 
         let langauge = this.languageRef.current.value; 
         let port = this.portRef.current.value; 
-        let dependants = this.depRef.current.value;
-        let nationality  = this.nationalityRef.current.value;
+        let dependants = this.depRef.current.value; 
+        let nationality  = this.nationalityRef.current.value; 
         let type = this.typeRef.current.value;
         console.log("TYPE:", type)
         const hashedPassword = require("crypto")
@@ -133,9 +130,8 @@ export default class RegisterForm extends Component {
             dependants: dependants,
             nationality: nationality, 
             type: type,
-            // notifications: notifications,
         }
-        console.log("Dataaaa",data);
+
         axios.post("/user", data, config)
         .then((response) => {
             console.log(response);
@@ -149,14 +145,12 @@ export default class RegisterForm extends Component {
             window.location.href = "/login";
         })
         .catch((err) => {
-            console.log(err);
-            if(err.response){
-                if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
-                    this.setState({
-                        error: "This email is already taken, please choose another or login."
-                    })
-                    window.scrollTo(0, 0);
-                }
+            console.log(err.response.data);
+            if(err.response.data.message && err.response.data.message.includes("ER_DUP_ENTRY")){
+                this.setState({
+                    error: "This email is already taken, please choose another or login."
+                })
+                window.scrollTo(0, 0);
             }
             else {
                 this.setState({
@@ -164,25 +158,10 @@ export default class RegisterForm extends Component {
                 })
                 window.scrollTo(0, 0);
             }
-           
             
         });
         console.log("data",data);
         return;
-    }
-
-    updateType = (event) => {
-        console.log(event);
-        if(event.target.value === "user"){
-            this.setState({
-                showExtra: true
-            })
-        }
-        else {
-            this.setState({
-                showExtra: false
-            })
-        }
     }
 
     render() {
@@ -223,37 +202,28 @@ export default class RegisterForm extends Component {
                         Please enter the langauges you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>
-                {/* <Form.Group>
-                    <Form.Label>Do you want to receive email notifications?</Form.Label>
-                    <Form.Control size="sm" as="select" ref={this.notifications}>
-                        <option value="on">Yes, please email me.</option>
-                        <option value="off">No thank you.</option>
-                    </Form.Control>
-                </Form.Group> */}
+
+
+
+                <Form.Group>
+                    <Form.Label>Port of entry:</Form.Label>
+                    <Form.Control ref={this.portRef}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Nationality:</Form.Label>
+                    <Form.Control ref={this.nationalityRef}/>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Number of Dependants:</Form.Label>
+                    <Form.Control ref={this.depRef}/>
+                </Form.Group>
                 <Form.Group>
                     <Form.Label>Are you a translator or an applicant?</Form.Label>
-                    <Form.Control size="sm" as="select" onChange={this.updateType} ref={this.typeRef}>
-                        <option value="translator">Translator</option>
+                    <Form.Control size="sm" as="select" ref={this.typeRef}>
                         <option value="user">User</option>
+                        <option value="translator">Translator</option>
                     </Form.Control>
                 </Form.Group>
-
-                <div className = {this.state.showExtra ? '' : 'hidden'} >
-                    <Form.Group>
-                        <Form.Label>Port of entry:</Form.Label>
-                        <Form.Control ref={this.portRef}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Nationality:</Form.Label>
-                        <Form.Control ref={this.nationalityRef}/>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Number of Dependants:</Form.Label>
-                        <Form.Control defaultValue={0} ref={this.depRef}/>
-                    </Form.Group>
-                </div>
-                
-                
                 
                 <Button variant="primary" type="submit">
                     Submit
