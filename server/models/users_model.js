@@ -18,7 +18,7 @@ const Users = function(Users) {
 var date = new Date();
 const currDate = date.toISOString().slice(0, 19).replace('T', ' '); 
 
-Users.create = (newUser, result) => {
+Users.create = (newUser,  result) => {
     console.log("TYPE IN SQL:", newUser)
 
     let language = newUser['language'];
@@ -52,7 +52,7 @@ Users.create = (newUser, result) => {
     });
 };
 
-Users.update = (newUser, result) => {
+Users.update = (newUser,uid, result) => {
 
   sql.query("UPDATE users SET first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, notifications=?, languages=? WHERE email=?", [newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, newUser.notifications, newUser.langauge, newUser.username], (err, res) => {
     if (err) {
@@ -60,13 +60,24 @@ Users.update = (newUser, result) => {
       result(err, null);
       return;
     }
-    const data {
-      
-    }
+    
+    const retUser = {
+      username: newUser.username,
+      dob: newUser.dob,
+      first_name: newUser.fName,
+      last_name: newUser.lName,
+      language: newUser.langauge, 
+      port: newUser.port,
+      depandants: newUser.dependants,
+      nationality: newUser.nationality,
+      type: newUser.type,
+      notifications: newUser.notifications ,
+      user_id: uid
+  };
 
     // console.log("THE UsersS RES OBJECT: ", res);
-    console.log("updated User: ", { ...newUser });
-    result(null, {  ...newUser  });
+    console.log("updated User: ", { ...retUser });
+    result(null, retUser);
   });
 };
 

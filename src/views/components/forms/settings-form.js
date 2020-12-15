@@ -54,7 +54,7 @@ export default class SettingsForm extends Component {
         let notifications = this.notificationsRef.current.value;
 
         let data = {
-
+            uid: this.context.user.user_id,
             username: this.context.user.email,
             dob: dob, 
             fName: fName, 

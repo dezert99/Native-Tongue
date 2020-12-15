@@ -69,10 +69,13 @@ exports.update = (req, res) => {
     dependants: req.body.dependants || 0,
     nationality: req.body.nationality || " ", 
     notifications: req.body.notifications,
+    type: req.body.type
   });
 
+  let uid = req.body.uid;
+
   // Save User in the database
-  User.update(user, (err, data) => {
+  User.update(user, uid, (err, data) => {
     if (err){
       res.status(500).send({
         message:
