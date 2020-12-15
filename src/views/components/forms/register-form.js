@@ -128,7 +128,7 @@ export default class RegisterForm extends Component {
             dob: dob, 
             fName: fName, 
             lName: lName, 
-            langauge: langauge,
+            langauge: langauge.toLowerCase(),
             port: port,
             dependants: dependants,
             nationality: nationality, 

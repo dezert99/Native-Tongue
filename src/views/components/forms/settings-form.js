@@ -37,15 +37,13 @@ export default class SettingsForm extends Component {
         this.portRef = React.createRef();
         this.depRef = React.createRef();
         this.nationalityRef = React.createRef();
-        this.notifications = React.createRef();
+        this.notificationsRef = React.createRef();
         
     }
 
     update = (e) => {
         e.preventDefault();
-        let username = this.usernameRef.current.value; 
-        let password = this.passwordRef.current.value; 
-        let confPassword = this.confPasswordRef.current.value; 
+
         let dob = this.dobRef.current.value; 
         let fName = this.fNameRef.current.value; 
         let lName = this.lNameRef.current.value; 
@@ -55,30 +53,8 @@ export default class SettingsForm extends Component {
         let nationality  = this.nationalityRef.current.value; 
         let notifications = this.notificationsRef.current.value;
 
-        const hashedPassword = require("crypto")
-        .createHash("sha256")
-        .update(this.passwordRef.current.value)
-        .digest("base64");
-
-        if(!validateEmail(username)){
-            this.setState({
-                error: "Please enter a valid email address"
-            })
-            window.scrollTo(0, 0);
-            return;
-        }
-        
-        if(confPassword != password) {
-            this.setState({
-                error: "Please confirm the entered passwords match"
-            })
-            window.scrollTo(0, 0);
-            return; 
-        }
-
         let data = {
-            username: username,
-            password: hashedPassword,
+
             dob: dob, 
             fName: fName, 
             lName: lName, 
@@ -86,9 +62,11 @@ export default class SettingsForm extends Component {
             port: port,
             dependants: dependants,
             nationality: nationality, 
+            notifications: notifications,
+            username: this.context.user.email,
         }
 
-        axios.post("/user", data, config)
+        axios.put("/user", data, config)
         .then((response) => {
             console.log(response);
             const data = response.data;
@@ -98,7 +76,8 @@ export default class SettingsForm extends Component {
                 })
                 return;
             }
-            window.location.href = "/login";
+            window.location.href = "/dashboard";
+            
         })
         .catch((err) => {
             console.log(err.response.data);
@@ -132,41 +111,47 @@ export default class SettingsForm extends Component {
                 :""}
                 <Row>
                     <Col>
-                    <Form.Control placeholder={this.context.user.first_name} ref={this.fNameRef} defaultValue={this.context.first_name}/>
+                    <Form.Control  ref={this.fNameRef} defaultValue={this.context.user.first_name}/>
                     </Col>
                     <Col>
-                    <Form.Control placeholder={this.context.user.last_name} ref={this.lNameRef} defaultValue={this.context.last_name}/>
+                    <Form.Control  ref={this.lNameRef} defaultValue={this.context.user.last_name}/>
                     </Col>
                 </Row>
                 <Form.Group>
                     <Form.Label >Date of Birth (MM/DD/YY):</Form.Label>
-                    <Form.Control placeholder={this.context.user.date_of_birth} ref={this.dobRef} defaultValue={this.context.date_of_birth}/>
+                    <Form.Control  ref={this.dobRef} defaultValue={this.context.user.date_of_birth}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Langauges spoken</Form.Label>
-                    <Form.Control placeholder={this.context.user.languages} ref={this.languageRef} defaultValue={this.context.languages}/>
+                    <Form.Control  ref={this.languageRef} defaultValue={this.context.user.languages}/>
                     <Form.Text id="langaugeHelpBlock" muted>
-                        Please re-enter all the languages you speak as a comma seperated list (IE spanish, german, italian ...)
+                        If you are changing your language preferences please re-enter all the languages you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>
-                {this.context.user.type !== "translator" ? 
-                    <div>
-                        <Form.Group>
-                            <Form.Label>Port of entry:</Form.Label>
-                            <Form.Control placeholder={this.context.user.port_of_entry} ref={this.portRef} defaultValue={this.context.port_of_entry}/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Nationality:</Form.Label>
-                            <Form.Control placeholder={this.context.user.nationality} ref={this.nationalityRef} defaultValue={this.context.nationality}/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Number of Dependants:</Form.Label>
-                            <Form.Control placeholder={this.context.num_of_dependants} ref={this.depRef} defaultValue={this.context.num_of_dependants}/>
-                        </Form.Group>
-                    </div>
-                    : ""
-                }
+                <Form.Group>
+                    <Form.Label>Do you want to receive email notifications?</Form.Label>
+                    <Form.Control size="sm" as="select"  ref={this.notificationsRef} defaultValue={this.context.user.notifications}>
+                        <option value="on">Yes please, keep me updated!</option>
+                        <option value="off">No thank you.</option>
+                    </Form.Control>
+                </Form.Group>
+            
+                <div className = {this.state.showExtra ? '' : 'hidden'} >
+                    <Form.Group>
+                        <Form.Label>Port of entry:</Form.Label>
+                        <Form.Control  ref={this.portRef} defaultValue={this.context.port_of_entry}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Nationality:</Form.Label>
+                        <Form.Control  ref={this.nationalityRef} defaultValue={this.context.user.nationality}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Number of Dependants:</Form.Label>
+                        <Form.Control ref={this.depRef} defaultValue={this.context.user.num_of_dependants}/>
+                    </Form.Group>
+                </div>
+
                 <Button variant="primary" type="submit">
                     Submit Edits
                 </Button>
