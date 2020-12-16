@@ -173,7 +173,7 @@ export default class RegisterForm extends Component {
 
     updateType = (event) => {
         console.log(event);
-        if(event.target.value === "user"){
+        if(event.target.value === "applicant"){
             this.setState({
                 showExtra: true
             })
@@ -234,7 +234,7 @@ export default class RegisterForm extends Component {
                     <Form.Label>Are you a translator or an applicant?</Form.Label>
                     <Form.Control size="sm" as="select" onChange={this.updateType} ref={this.typeRef}>
                         <option value="translator">Translator</option>
-                        <option value="user">User</option>
+                        <option value="applicant">Applicant</option>
                     </Form.Control>
                 </Form.Group>
 

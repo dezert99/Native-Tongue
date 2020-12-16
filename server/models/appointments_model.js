@@ -64,9 +64,14 @@ Appointment.getApplicantAppointments = async (applicantID,result) => {
   let languages = userInfo[0]["languages"].replace(" ","").split(",");
  console.log("languages ", languages);
   let translatorIds = []
+  let justIds = []
   for(let i = 0; i < languages.length; i++) {
     let resp = await grabSQLData("SELECT * FROM language WHERE language=?",[languages[i]]);
-    translatorIds.push(...resp);
+    if(!justIds.includes(resp.user_id)) {
+      translatorIds.push(...resp);
+    }
+    justIds.push(resp.user_id)
+
   }
   let pending_accepted = [];
   let open = [];

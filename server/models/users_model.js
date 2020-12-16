@@ -35,19 +35,21 @@ Users.create = (newUser,  result) => {
   
       // console.log("THE UsersS RES OBJECT: ", res);
       console.log("created User: ", { id: res.insertId, ...newUser });
-      langArray.forEach((lang) => {
-        sql.query("INSERT INTO language SET user_id = ?, language = ?", [res.insertId, lang.replace(" ","")], (err, res) => {
-          if (err) {
-            console.log("error in insert language users model: ", err);
-            // result(err, null);
-            return;
-          }
-      
-          // console.log("THE UsersS RES OBJECT: ", res);
-          // console.log("created User: ", { id: res.insertId, ...newUser });
-          // result(null, { id: res.insertId, ...newUser });
-        });
-      })
+      if(newUser.type === "translator") {
+        langArray.forEach((lang) => {
+          sql.query("INSERT INTO language SET user_id = ?, language = ?", [res.insertId, lang.replace(" ","")], (err, res) => {
+            if (err) {
+              console.log("error in insert language users model: ", err);
+              // result(err, null);
+              return;
+            }
+        
+            // console.log("THE UsersS RES OBJECT: ", res);
+            // console.log("created User: ", { id: res.insertId, ...newUser });
+            // result(null, { id: res.insertId, ...newUser });
+          });
+        })
+      }
       result(null, { id: res.insertId, ...newUser });
     });
 };
