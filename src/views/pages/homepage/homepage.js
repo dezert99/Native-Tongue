@@ -38,15 +38,15 @@ export default class HomePage extends Component {
                   
                     <Col sm={5} xs={12}>
                     
-                    <div style={{width: "100%"}} padding-top="1000px">
+                    <div style={{width: "100%",  marginTop: "15px"}}>
                         {this.showLogin? <LoginPage/> 
                         :
                         <Col>
-                            <Row>
+                            <Row style={{marginLeft: "150px"}}>
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/USCIS_logo_English.svg" ></img>
                             </Row>
-                            <Row top-padding="50px">
-                                <img src="https://rampages.us/izdivine/wp-content/uploads/sites/8175/2015/10/15.jpg" width="400" height="600" opacity="5.0"></img>
+                            <Row  style={{marginTop: "50px" ,marginLeft: "80px"}}>
+                                <img src="https://rampages.us/izdivine/wp-content/uploads/sites/8175/2015/10/15.jpg" width="290" height="400" opacity="5.0"></img>
                             </Row>
                         </Col>
                         }
