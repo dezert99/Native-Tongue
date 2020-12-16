@@ -4,21 +4,18 @@ let faq_data = {
     title: "",
     rows: [
         {
-            title: "Register or Login.",
-            content: "You can set up a meeting with a translator by navigating to the calender from the homepage. There you will see all the available time slots with translators that speak your language. You can simply click on the slot and enter your details to request the meeting.",
+            title: "Getting Started",
+            content: "To get started please register your account or login to an exisiting account. Then navigate to the dashboard and you are off to the races.",
         },
         {
             title: "Make an appointment.",
-            content: 'You can upload documents in the documents field on the homepage. If you have not yet done so please create an account, login and upload your documents on the homepage. We accept all popular file formats.',
+            content: 'Once you are at the dashboard you are set to request a translation appointment. Do so by clicking on an open time slot, inputing the details an clicking the "Request" button.',
         },
         {
             title: "Communicate with translator.",
-            content: 'All your data is encrypted and will never be shared with anyone except the people you have elected to share with.',
+            content: 'Once your translator accepts your appointment you can freely communicate via the chat in the dashboard. If you have multiple meetings scheduled with multiple translators simply toggle between the chats by clicking on the respective appointment.',
         },
-        {
-            title: "Securely share legal documents.",
-            content: 'As many as you want. We are here to help you through the entire immigration process and are happy to help as much as we can.',
-        },
+
     ],
 };
 
@@ -55,8 +52,8 @@ export default class About extends Component {
                         <br></br><br></br>
                         <em><u>This is a demo for purposes of marketing and beta testing.</u></em>
                         <br></br><br></br>
-                        <div href="facebook.com">
-                            Links to: <br></br>
+                        <div>
+                            Other Deliverables include: <br></br>
                             <li>Pitch Deck</li>
                             <li>SDD</li>
                             <li>SRS</li>
