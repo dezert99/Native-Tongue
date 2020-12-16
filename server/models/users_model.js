@@ -6,7 +6,7 @@ const Users = function(Users) {
     this.dob = Users.dob; 
     this.fName = Users.fName; 
     this.lName = Users.lName; 
-    this.language = Users.langauge;
+    this.language = Users.language;
     this.port = Users.port;
     this.dependants = Users.dependants;
     this.nationality = Users.nationality; 
@@ -38,7 +38,7 @@ Users.create = (newUser,  result) => {
       langArray.forEach((lang) => {
         sql.query("INSERT INTO language SET user_id = ?, language = ?", [res.insertId, lang.replace(" ","")], (err, res) => {
           if (err) {
-            console.log("error in insert langauge users model: ", err);
+            console.log("error in insert language users model: ", err);
             // result(err, null);
             return;
           }
@@ -53,6 +53,7 @@ Users.create = (newUser,  result) => {
 };
 
 Users.update = (newUser,uid, result) => {
+ console.log("newUser ", newUser);
 
   sql.query("UPDATE users SET first_name =?, last_name = ?, date_of_birth=?, num_dependants=?, port_of_entry=?, nationality=?, notifications=?, languages=? WHERE email=?", [newUser.fName, newUser.lName, newUser.dob, newUser.dependants, newUser.port, newUser.nationality, newUser.notifications, newUser.language, newUser.username], (err, res) => {
     if (err) {
@@ -66,7 +67,7 @@ Users.update = (newUser,uid, result) => {
       dob: newUser.dob,
       first_name: newUser.fName,
       last_name: newUser.lName,
-      language: newUser.langauge, 
+      language: newUser.language, 
       port: newUser.port,
       depandants: newUser.dependants,
       nationality: newUser.nationality,

@@ -215,8 +215,8 @@ Appointment.respondToRequest = ((appointmentId, newStatus, result) => {
   });
 })
 
-Appointment.byLangauge = async (langauge,uid, result) => {
-  let ids = await grabSQLData("SELECT * FROM language WHERE language=?",[langauge]) 
+Appointment.bylanguage = async (language,uid, result) => {
+  let ids = await grabSQLData("SELECT * FROM language WHERE language=?",[language]) 
   let resp = [];
   console.log("ids", ids);
   for(let i = 0; i < ids.length; i++){

@@ -47,7 +47,7 @@ export default class SettingsForm extends Component {
         let dob = this.dobRef.current.value; 
         let fName = this.fNameRef.current.value; 
         let lName = this.lNameRef.current.value; 
-        let langauge = this.languageRef.current.value; 
+        let language = this.languageRef.current.value; 
         let port = this.portRef.current.value; 
         let dependants = this.depRef.current.value; 
         let nationality  = this.nationalityRef.current.value; 
@@ -59,7 +59,7 @@ export default class SettingsForm extends Component {
             dob: dob, 
             fName: fName, 
             lName: lName, 
-            langauge: langauge,
+            language: language,
             port: port,
             dependants: dependants,
             nationality: nationality, 
@@ -134,9 +134,9 @@ export default class SettingsForm extends Component {
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label>Langauges spoken</Form.Label>
+                    <Form.Label>languages spoken</Form.Label>
                     <Form.Control  ref={this.languageRef} defaultValue={this.context.user.languages}/>
-                    <Form.Text id="langaugeHelpBlock" muted>
+                    <Form.Text id="languageHelpBlock" muted>
                         If you are changing your language preferences please re-enter all the languages you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>

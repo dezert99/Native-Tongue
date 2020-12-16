@@ -95,7 +95,7 @@ export default class RegisterForm extends Component {
         let dob = this.dobRef.current.value; 
         let fName = this.fNameRef.current.value; 
         let lName = this.lNameRef.current.value; 
-        let langauge = this.languageRef.current.value; 
+        let language = this.languageRef.current.value; 
         let port = this.portRef.current.value; 
         let dependants = this.depRef.current.value;
         let nationality  = this.nationalityRef.current.value;
@@ -128,7 +128,7 @@ export default class RegisterForm extends Component {
             dob: dob, 
             fName: fName, 
             lName: lName, 
-            langauge: langauge.toLowerCase(),
+            language: language.toLowerCase(),
             port: port,
             dependants: dependants,
             nationality: nationality, 
@@ -217,10 +217,10 @@ export default class RegisterForm extends Component {
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label>Langauges spoken</Form.Label>
+                    <Form.Label>languages spoken</Form.Label>
                     <Form.Control ref={this.languageRef}/>
-                    <Form.Text id="langaugeHelpBlock" muted>
-                        Please enter the langauges you speak as a comma seperated list (IE spanish, german, italian ...)
+                    <Form.Text id="languageHelpBlock" muted>
+                        Please enter the languages you speak as a comma seperated list (IE spanish, german, italian ...)
                     </Form.Text>
                 </Form.Group>
                 {/* <Form.Group>
